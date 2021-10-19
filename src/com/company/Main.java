@@ -3,6 +3,6 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-	//Härskrivervikod
+	// write your code here
     }
 }
