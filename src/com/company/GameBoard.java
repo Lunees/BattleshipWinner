@@ -2,20 +2,33 @@ package com.company;
 
 public class GameBoard {
 
-    private int height;
-    private int width;
+    private int rows = 10;
+    private int columns = 10;
 
-    private int[][] playerBoard = new int[10][10];
+    private int[][] playerBoard = new int[rows][columns];
 
-    public GameBoard(int height, int width, int[][] playerBoard) {
-        this.height = height;
-        this.width = width;
+    public GameBoard(int rows, int columns, int[][] playerBoard) {
+        this.rows = rows;
+        this.columns = columns;
         this.playerBoard = playerBoard;
     }
 
+    public void createGameBoard(){
+        for(int i = 0; i < rows; i++ ){
+            for (int j = 0; j < columns; j++){
+                playerBoard[i][j] = 0;
+            }
+        }
+        showGameBoard(); 
+    }
+
     public void showGameBoard(){
-        for(int i = 0; i < playerBoard.length; i++ ){
-            
+        for (int i = 0; i < 10; i++){
+
+            for(int j = 0; j < columns; j++){
+                System.out.printf(playerBoard[i][j] + " ");
+            }
+            System.out.println();
         }
     }
 
@@ -24,20 +37,20 @@ public class GameBoard {
 
 
 
-    public int getHeight() {
-        return height;
+    public int getRows() {
+        return rows;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 
-    public int getWidth() {
-        return width;
+    public int getColumns() {
+        return columns;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setColumns(int columns) {
+        this.columns = columns;
     }
 
     public int[][] getPlayerBoard() {
