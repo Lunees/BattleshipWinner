@@ -13,6 +13,17 @@ public class GameBoard {
         this.playerBoard = playerBoard;
     }
 
+    public void showGameBoard(){
+        for(int i = 0; i < playerBoard.length; i++ ){
+            
+        }
+    }
+
+
+
+
+
+
     public int getHeight() {
         return height;
     }
@@ -36,4 +47,6 @@ public class GameBoard {
     public void setPlayerBoard(int[][] playerBoard) {
         this.playerBoard = playerBoard;
     }
+
+
 }
