@@ -1,5 +1,5 @@
 package com.company;
-
+import static java.lang.Math.*;
 public class GameBoard {
 
     private int rows = 10;
@@ -32,8 +32,11 @@ public class GameBoard {
         }
     }
 public void placeHorizontal(Ship ship){
+    int startIndex = (int)(Math.random()*5);
+
         for(int i = 0; i < ship.getLength(); i++){
-          playerBoard[0][0+i] = ship.getTypeOfShip();
+          playerBoard[0][startIndex+i] = ship.getTypeOfShip();
+            System.out.println(i);
         }
     }
 
