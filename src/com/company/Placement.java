@@ -2,34 +2,32 @@ package com.company;
 
 public class Placement {
 
+    //Variabler
     private GameBoard gameBoard;
 
-
-
+    //Metoder
+    //Placera vertikalt eller horisontellt
     public void placeHorizontal(Ship ship){
-        int startIndexX = (int)(Math.random()*5); //slänger ut skeppet vertikalt
-        int startIndexY = (int)(Math.random()*10); // slänger ut de random horizontalt
+        int startIndexX = (int)(Math.random()*(10 - ship.getLength())); //slänger ut skeppet vertikalt, inte för nära kanten
+        int startIndexY = (int)(Math.random()*10); // slänger ut de random horisontalt
 
+        //Placerar ut skepp
         for(int i = 0; i < ship.getLength(); i++){
-            playerBoard[startIndexY][startIndexX+i] = ship.getTypeOfShip();
-            System.out.println(i);
+            gameBoard.getPlayerBoard()[startIndexY][startIndexX + i] = ship.getTypeOfShip();
         }
     }
+
     public void placeVertical(Ship ship){
-        int startIndexY = (int)(Math.random()*5); //slänger ut skeppet
-        int startIndexX = (int)(Math.random()*10); // slänger ut de random horizontalt
+        int startIndexY = (int)(Math.random() * (10 - ship.getLength())); //slänger ut skeppet horisontalt, inte för nära kanten
+        int startIndexX = (int)(Math.random() * 10); // slänger ut de random vertikalt
 
+        //Placerar ut skepp
         for(int i = 0; i < ship.getLength(); i++){
-            playerBoard[startIndexY+i][startIndexX] = ship.getTypeOfShip();
-            System.out.println(i);
+            gameBoard.getPlayerBoard()[startIndexY + i][startIndexX] = ship.getTypeOfShip();
         }
     }
 
-
-
-
-
-
+    //Get n set
     public GameBoard getGameBoard() {
         return gameBoard;
     }
