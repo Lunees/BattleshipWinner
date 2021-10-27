@@ -31,7 +31,11 @@ public class GameBoard {
             System.out.println();
         }
     }
-
+public void placeHorizontal(Ship ship){
+        for(int i = 0; i < ship.getLength(); i++){
+          playerBoard[0][0+i] = ship.getTypeOfShip();
+        }
+    }
 
 
 

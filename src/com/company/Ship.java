@@ -2,13 +2,13 @@ package com.company;
 
 public class Ship {
     private String shipName;
-    private char typeOfShip;
+    private int typeOfShip;
     private int length;
     private boolean alive = true;
 
 
 
-    public Ship(String shipName, char typeOfShip, int length, boolean alive) {
+    public Ship(String shipName, int typeOfShip, int length, boolean alive) {
         this.shipName = shipName;
         this.typeOfShip = typeOfShip;
         this.length = length;
@@ -23,11 +23,11 @@ public class Ship {
         this.shipName = shipName;
     }
 
-    public char getTypeOfShip() {
+    public int getTypeOfShip() {
         return typeOfShip;
     }
 
-    public void setTypeOfShip(char typeOfShip) {
+    public void setTypeOfShip(int typeOfShip) {
         this.typeOfShip = typeOfShip;
     }
 
