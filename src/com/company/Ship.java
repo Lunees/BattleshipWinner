@@ -1,13 +1,13 @@
 package com.company;
 
 public class Ship {
+    //Variabler
     private String shipName;
     private int typeOfShip;
     private int length;
     private boolean alive = true;
 
-
-
+    //Konstructor
     public Ship(String shipName, int typeOfShip, int length, boolean alive) {
         this.shipName = shipName;
         this.typeOfShip = typeOfShip;
@@ -15,6 +15,7 @@ public class Ship {
         this.alive = alive;
     }
 
+    //Get n set
     public String getShipName() {
         return shipName;
     }
