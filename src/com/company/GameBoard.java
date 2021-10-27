@@ -31,11 +31,23 @@ public class GameBoard {
             System.out.println();
         }
     }
+     // Y-Led upp , X-Led -
+
 public void placeHorizontal(Ship ship){
-    int startIndex = (int)(Math.random()*5);
+    int startIndexX = (int)(Math.random()*5); //slänger ut skeppet vertikalt
+    int startIndexY = (int)(Math.random()*10); // slänger ut de random horizontalt
 
         for(int i = 0; i < ship.getLength(); i++){
-          playerBoard[0][startIndex+i] = ship.getTypeOfShip();
+          playerBoard[startIndexY][startIndexX+i] = ship.getTypeOfShip();
+            System.out.println(i);
+        }
+    }
+public void placeVertical(Ship ship){
+    int startIndexY = (int)(Math.random()*5); //slänger ut skeppet
+    int startIndexX = (int)(Math.random()*10); // slänger ut de random horizontalt
+
+        for(int i = 0; i < ship.getLength(); i++){
+            playerBoard[startIndexY+i][startIndexX] = ship.getTypeOfShip();
             System.out.println(i);
         }
     }
