@@ -7,25 +7,31 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Player player;
+        Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
 
+        int port = 8900;
+
+        //Spelaren får bestämma om den ska vara spelare 1 eller 2
         System.out.println("Spelare 1 eller 2?");
         int playerChoice = scanner.nextInt();
+
+        //Sätter upp spelaren
         while(true){
              if (playerChoice == 1){
-                 player = new Player1();
-                 player.start(8900);
-                 player.send("hej");
+                 player = new Player1(); //Sätter player som player 1
+                 player.start(port);
+                 player.send("hej"); //Player 1 startar med att skicka meddelande
                  break;
              }
              else if (playerChoice == 2){
-                 player = new Player2();
-                 player.start(8900);
+                 player = new Player2(); //Sätter player som player 2
+                 player.start(port);
                  break;
              }
         }
-        System.out.println("Klar, går vidare till while");
+        //System.out.println("Klar, går vidare till while");
 
+        //spelarna kommunicerar (Test)
         String message = "";
         while (!message.equals("qq")){
             scanner = new Scanner(System.in);

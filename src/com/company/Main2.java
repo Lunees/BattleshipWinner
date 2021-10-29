@@ -7,10 +7,13 @@ public class Main2 {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Player player;
+        Player player; //Om det är spelare 1 eller 2 bestäms senare
 
+        //Spelaren får bestämma om den ska vara spelare 1 eller 2
         System.out.println("Spelare 1 eller 2?");
         int playerChoice = scanner.nextInt();
+
+        //Startar kommunikation
         while(true){
             if (playerChoice == 1){
                 player = new Player1();

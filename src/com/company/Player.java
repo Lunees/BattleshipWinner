@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
+//Default player-klass
 public abstract class Player {
+    //Variabler
     public Socket player2;
     public PrintWriter out;
     public BufferedReader in;
-    public Scanner scanner = new Scanner(System.in);
 
+    //Startar uppkoppling till server/client
     public void start(int port){
         try{
 
@@ -28,6 +29,7 @@ public abstract class Player {
         }
     }
 
+    //Skickar ut meddelande
     public void send (String string){
         try {
             out.println(string);
@@ -38,6 +40,7 @@ public abstract class Player {
         }
     }
 
+    //Tar emot meddelande
     public String receive(){
         String message = null;
         try {
@@ -49,6 +52,7 @@ public abstract class Player {
         return message;
     }
 
+    //Stoppar uppkopplingen
     public void stop (){
         try {
             player2.close();

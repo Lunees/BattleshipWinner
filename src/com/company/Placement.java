@@ -27,6 +27,7 @@ public class Placement {
         }
     }
 
+    //Placera manuellt
     public void placeHorizontal(Ship ship, int row, int column){
         int startIndexX = column; //slänger ut skeppet vertikalt, inte för nära kanten
         int startIndexY = row; //slänger ut de random horisontalt
