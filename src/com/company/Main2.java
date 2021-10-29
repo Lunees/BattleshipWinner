@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.Scanner;
 
-public class Main {
+public class Main2 {
 
     public static void main(String[] args) {
 
@@ -12,27 +12,29 @@ public class Main {
         System.out.println("Spelare 1 eller 2?");
         int playerChoice = scanner.nextInt();
         while(true){
-             if (playerChoice == 1){
-                 player = new Player1();
-                 player.start(8900);
-                 player.send("hej");
-                 break;
-             }
-             else if (playerChoice == 2){
-                 player = new Player2();
-                 player.start(8900);
-                 break;
-             }
+            if (playerChoice == 1){
+                player = new Player1();
+                player.start(8900);
+                player.send("hej");
+                break;
+            }
+            else if (playerChoice == 2){
+                player = new Player2();
+                player.start(8900);
+                break;
+            }
         }
         System.out.println("Klar, går vidare till while");
 
         String message = "";
         while (!message.equals("qq")){
             scanner = new Scanner(System.in);
-            player.receive();
+            System.out.println("Tog emot: " + player.receive());
             message = scanner.nextLine();
             player.send(message);
         }
+
+
 
 
         //Skapar objekt
