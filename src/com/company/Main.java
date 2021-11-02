@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
+        /*Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
 
         int port = 8900;
 
@@ -39,7 +39,7 @@ public class Main {
             message = scanner.nextLine();
             player.send(message);
         }
-
+       */
 
         //Skapar objekt
         GameBoard gameBoard = new GameBoard(10, 10, new int[10][10]);
@@ -73,5 +73,22 @@ public class Main {
             shipArray[i] = new Ship("Carrier",5, 5, true);
             System.out.println("Skriv 1 gång" + shipArray[i]);
         }
+
+        //Placerar ut skepp.
+        placement.placeHorizontal(shipArray[0],0,0);
+        placement.placeHorizontal(shipArray[1],7,0);
+        placement.placeVertical(shipArray[2],5,5);
+        placement.placeVertical(shipArray[3],2,9);
+        placement.placeHorizontal(shipArray[4],2,5);
+        placement.placeVertical(shipArray[5],5,9);
+        placement.placeVertical(shipArray[6],0,3);
+        placement.placeHorizontal(shipArray[7],0,6);
+        placement.placeVertical(shipArray[8],2,0);
+        placement.placeHorizontal(shipArray[9],9,5);
+
+        gameBoard.showGameBoard();
+
+
+
     }
 }
