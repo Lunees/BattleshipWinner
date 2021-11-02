@@ -51,6 +51,7 @@ public class Main {
 
         //Skapar skeppobjekt
         // 5 = Carrier 4 = Battleship 3 = Cruiser 2 = Submarine
+        // 1x Carrier, 2x battleship, 3x cruiser, 4x submarine
         Ship ship1 = new Ship("Carrier",5, 5, true);
         Ship ship2 = new Ship("Battleship",4,4,true);
         Ship ship3 = new Ship("Cruiser",3,3,true);
@@ -67,5 +68,25 @@ public class Main {
 
         //Skriver ut spelbrädet
         gameBoard.showGameBoard();
+
+        Ship[] shipArray = new Ship[10];
+
+        int i = 0;
+        for (; i < 4; i++){
+            shipArray[i] = new Ship("Submarine",2,2,true);
+            System.out.println("Skriv 4 ggr" + shipArray[i]);
+        }
+        for (; i < (4+3); i++){
+            shipArray[i] = new Ship("Cruiser",3,3,true);
+            System.out.println("Skriv 3 ggr" + shipArray[i]);
+        }
+        for (; i < (4+3+2); i++){
+            shipArray[i] = new Ship("Battleship",4,4,true);
+            System.out.println("Skriv 2 ggr" + shipArray[i]);
+        }
+        for (; i < (4+3+2+1); i++){
+            shipArray[i] = new Ship("Carrier",5, 5, true);
+            System.out.println("Skriv 1 gång" + shipArray[i]);
+        }
     }
 }
