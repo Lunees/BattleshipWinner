@@ -16,10 +16,10 @@ public class GameBoard {
 
     //Metoder
     //För att skapa ett tomt spelbräde
-    public void createGameBoard(){
+    public void createGameBoard(int num){
         for(int i = 0; i < rows; i++ ){
             for (int j = 0; j < columns; j++){
-                playerBoard[i][j] = 0;
+                playerBoard[i][j] = num;
             }
         }
         showGameBoard(); 

@@ -42,17 +42,19 @@ public class Main {
        */
 
         //Skapar objekt
-        GameBoard gameBoard = new GameBoard(10, 10, new int[10][10]);
-        gameBoard.createGameBoard();
+        GameBoard playerBoard = new GameBoard(10, 10, new int[10][10]);
+        GameBoard enemyBoard = new GameBoard(10,10, new int[10][10]);
+        enemyBoard.createGameBoard(0);
+        playerBoard.createGameBoard(9);
         Placement placement = new Placement();
-        placement.setGameBoard(gameBoard);
+        placement.setGameBoard(playerBoard);
 
-        GameFunction gameFunction = new GameFunction(gameBoard);
+        GameFunction gameFunction = new GameFunction(playerBoard);
         
         System.out.println("Is hit? : " + gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt()));
 
         //Skriver ut spelbrädet
-        gameBoard.showGameBoard();
+        playerBoard.showGameBoard();
 
         Ship[] shipArray = new Ship[10];
 
@@ -86,7 +88,7 @@ public class Main {
         placement.placeVertical(shipArray[8],2,0);
         placement.placeHorizontal(shipArray[9],9,5);
 
-        gameBoard.showGameBoard();
+        playerBoard.showGameBoard();
 
 
 
