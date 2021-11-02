@@ -48,22 +48,7 @@ public class Main {
         placement.setGameBoard(gameBoard);
 
         GameFunction gameFunction = new GameFunction(gameBoard);
-
-        //Skapar skeppobjekt
-        // 5 = Carrier 4 = Battleship 3 = Cruiser 2 = Submarine
-        // 1x Carrier, 2x battleship, 3x cruiser, 4x submarine
-        Ship ship1 = new Ship("Carrier",5, 5, true);
-        Ship ship2 = new Ship("Battleship",4,4,true);
-        Ship ship3 = new Ship("Cruiser",3,3,true);
-        Ship ship4 = new Ship("Submarine",2,2,true);
-
-        //Placerar skepp
-        placement.placeHorizontal(ship1);
-        placement.placeVertical(ship2);
-        placement.placeVertical(ship3,3,5);
-        placement.placeVertical(ship4);
-        System.out.println(" ");
-
+        
         System.out.println("Is hit? : " + gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt()));
 
         //Skriver ut spelbrädet
