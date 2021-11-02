@@ -12,7 +12,7 @@ public class Player2 extends Player {
         try {
             player2 = new Socket(InetAddress.getLocalHost(), port);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Nu krashade start p2." + e);
         }
 
         super.start(port);

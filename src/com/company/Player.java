@@ -25,7 +25,7 @@ public abstract class Player {
 
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("Nu krashade Start." + e);
         }
     }
 
@@ -36,7 +36,7 @@ public abstract class Player {
             System.out.println("sent");
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("Nu krashade Send." + e);
         }
     }
 
@@ -47,7 +47,7 @@ public abstract class Player {
             message = in.readLine();
             System.out.println(message);
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("Nu krashade Receive." + e);
         }
         return message;
     }
@@ -58,7 +58,7 @@ public abstract class Player {
             player2.close();
         }
         catch (IOException e){
-            System.out.println(e);
+            System.out.println("Nu krashade stop." + e);
         }
     }
 }

@@ -15,7 +15,7 @@ public class Player1 extends Player {
             player2 = player1.accept();
         }
         catch (IOException e) {
-            System.out.println(e);
+            System.out.println("Nu krashade start p1." + e);
         }
 
         super.start(port);
