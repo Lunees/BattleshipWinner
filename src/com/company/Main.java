@@ -44,36 +44,42 @@ public class Main {
         //Skapar objekt
         GameBoard playerBoard = new GameBoard(10, 10, new int[10][10]);
         GameBoard enemyBoard = new GameBoard(10,10, new int[10][10]);
-        enemyBoard.createGameBoard(0);
-        playerBoard.createGameBoard(9);
+        enemyBoard.createGameBoard(0);  // 0 = fogblock som gör det enklare att deklarera träff eller miss
+        playerBoard.createGameBoard(9); // 9 = vattenblock
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
 
         GameFunction gameFunction = new GameFunction(playerBoard);
         
-        System.out.println("Is hit? : " + gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt()));
 
-        //Skriver ut spelbrädet
-        playerBoard.showGameBoard();
+
+
 
         Ship[] shipArray = new Ship[10];
 
+        //lägger till antal skepp till de olika skeppstyperna
         int i = 0;
-        for (; i < 4; i++){
+        int submarine = 4;
+        int cruiser = 3;
+        int battleship = 2;
+        int carrier = 1;
+
+
+        // initierar submarine i arrayen
+        for (; i < submarine; i++){
             shipArray[i] = new Ship("Submarine",2,2,true);
-            System.out.println("Skriv 4 ggr" + shipArray[i]);
         }
-        for (; i < (4+3); i++){
+        // lägger till cruisern till den tidigare submarinen
+        for (; i < (submarine + cruiser); i++){
             shipArray[i] = new Ship("Cruiser",3,3,true);
-            System.out.println("Skriv 3 ggr" + shipArray[i]);
         }
-        for (; i < (4+3+2); i++){
+        // lägger till battleship till de tidigare cruiserna och submarinesen
+        for (; i < (submarine + cruiser + battleship); i++){
             shipArray[i] = new Ship("Battleship",4,4,true);
-            System.out.println("Skriv 2 ggr" + shipArray[i]);
         }
-        for (; i < (4+3+2+1); i++){
+        // lägger till carriern på slutet
+        for (; i < (submarine + cruiser + battleship + carrier); i++){
             shipArray[i] = new Ship("Carrier",5, 5, true);
-            System.out.println("Skriv 1 gång" + shipArray[i]);
         }
 
         //Placerar ut skepp.
@@ -87,6 +93,8 @@ public class Main {
         placement.placeHorizontal(shipArray[7],0,6);
         placement.placeVertical(shipArray[8],2,0);
         placement.placeHorizontal(shipArray[9],9,5);
+
+        //Skriver ut spelbrädet
 
         playerBoard.showGameBoard();
 
