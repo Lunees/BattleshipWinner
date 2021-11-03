@@ -34,6 +34,7 @@ public class GameBoard {
             }
             System.out.println();
         }
+        System.out.println("--------------------------"); // delar upp gameboardsen
     }
 
     //Get n Set
