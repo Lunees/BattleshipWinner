@@ -1,36 +1,44 @@
 package com.company;
-import static java.lang.Math.*;
+
 public class GameBoard {
     //Variabler
     private int rows = 10;
     private int columns = 10;
+    private int defaultBlock;
 
-    private int[][] playerBoard = new int[rows][columns];
+    //private int[][] playerBoard = new int[rows][columns];
+    private Ship[][] playerBoard = new Ship[rows][columns];
 
     //Constructor
-    public GameBoard(int rows, int columns, int[][] playerBoard) {
+    public GameBoard(int rows, int columns, int defaultBlock) {
         this.rows = rows;
         this.columns = columns;
-        this.playerBoard = playerBoard;
+        this.defaultBlock = defaultBlock;
+    }
+
+    public GameBoard() {
     }
 
     //Metoder
     //För att skapa ett tomt spelbräde
-    public void createGameBoard(int num){
+   /* public void createGameBoard(int num){
         for(int i = 0; i < rows; i++ ){
             for (int j = 0; j < columns; j++){
-                playerBoard[i][j] = num;
+                playerBoard[i][j] = null;
             }
         }
         showGameBoard(); 
-    }
+    }*/
 
     //Visar spelbrädet
     public void showGameBoard(){
-        for (int i = 0; i < 10; i++){
+        for (int row = 0; row < rows; row++){
 
-            for(int j = 0; j < columns; j++){
-                System.out.printf(playerBoard[i][j] + " ");
+            for(int column = 0; column < columns; column++){
+                if (playerBoard[row][column] == null)
+                    System.out.print(defaultBlock + " ");
+                else
+                    System.out.print(playerBoard[row][column].getTypeOfShip() + " ");
             }
             System.out.println();
         }
@@ -54,13 +62,19 @@ public class GameBoard {
         this.columns = columns;
     }
 
-    public int[][] getPlayerBoard() {
+    public int getDefaultBlock() {
+        return defaultBlock;
+    }
+
+    public void setDefaultBlock(int defaultBlock) {
+        this.defaultBlock = defaultBlock;
+    }
+
+    public Ship[][] getPlayerBoard() {
         return playerBoard;
     }
 
-    public void setPlayerBoard(int[][] playerBoard) {
+    public void setPlayerBoard(Ship[][] playerBoard) {
         this.playerBoard = playerBoard;
     }
-
-
 }

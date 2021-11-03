@@ -14,8 +14,11 @@ public class GameFunction {
 
     //Metoder
     public boolean gettingShot (int row, int column){
-        if (gameBoard.getPlayerBoard()[row][column] != 9) {
-            gameBoard.getPlayerBoard()[row][column] = -1;
+        Ship currentShot = gameBoard.getPlayerBoard()[row][column];
+        if (currentShot != null) {
+            currentShot.setLength(currentShot.getLength()-1);
+            currentShot = new Ship("Dead", -1, 1, false);
+
             return true;
         }
         else

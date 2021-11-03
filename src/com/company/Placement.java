@@ -13,7 +13,7 @@ public class Placement {
 
         //Placerar ut skepp
         for(int i = 0; i < ship.getLength(); i++){
-            gameBoard.getPlayerBoard()[startIndexY][startIndexX + i] = ship.getTypeOfShip();
+            gameBoard.getPlayerBoard()[startIndexY][startIndexX + i] = ship;
         }
     }
 
@@ -23,7 +23,7 @@ public class Placement {
 
         //Placerar ut skepp
         for(int i = 0; i < ship.getLength(); i++){
-            gameBoard.getPlayerBoard()[startIndexY + i][startIndexX] = ship.getTypeOfShip();
+            gameBoard.getPlayerBoard()[startIndexY + i][startIndexX] = ship;
         }
     }
 
@@ -34,7 +34,7 @@ public class Placement {
 
         //Placerar ut skepp
         for(int i = 0; i < ship.getLength(); i++){
-            gameBoard.getPlayerBoard()[startIndexY][startIndexX + i] = ship.getTypeOfShip();
+            gameBoard.getPlayerBoard()[startIndexY][startIndexX + i] = ship;
         }
     }
 
@@ -44,7 +44,7 @@ public class Placement {
 
         //Placerar ut skepp
         for(int i = 0; i < ship.getLength(); i++){
-            gameBoard.getPlayerBoard()[startIndexY + i][startIndexX] = ship.getTypeOfShip();
+            gameBoard.getPlayerBoard()[startIndexY + i][startIndexX] = ship;
         }
     }
 

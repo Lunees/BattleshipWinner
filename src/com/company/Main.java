@@ -42,18 +42,14 @@ public class Main {
        */
 
         //Skapar objekt
-        GameBoard playerBoard = new GameBoard(10, 10, new int[10][10]);
-        GameBoard enemyBoard = new GameBoard(10,10, new int[10][10]);
-        enemyBoard.createGameBoard(0);  // 0 = fogblock som gör det enklare att deklarera träff eller miss
-        playerBoard.createGameBoard(9); // 9 = vattenblock
+        GameBoard playerBoard = new GameBoard(10, 10, 9);
+        GameBoard enemyBoard = new GameBoard(10,10, 0);
+        //enemyBoard.createGameBoard(0);  // 0 = fogblock som gör det enklare att deklarera träff eller miss
+        //playerBoard.createGameBoard(9); // 9 = vattenblock
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
 
         GameFunction gameFunction = new GameFunction(playerBoard);
-        
-
-
-
 
         Ship[] shipArray = new Ship[10];
 
@@ -98,7 +94,9 @@ public class Main {
 
         playerBoard.showGameBoard();
 
+        gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt());
 
+        playerBoard.showGameBoard();
 
     }
 }
