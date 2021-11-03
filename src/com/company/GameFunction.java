@@ -14,7 +14,7 @@ public class GameFunction {
 
     //Metoder
     public boolean gettingShot (int row, int column){
-        if (gameBoard.getPlayerBoard()[row][column] != 0) {
+        if (gameBoard.getPlayerBoard()[row][column] != 9) {
             gameBoard.getPlayerBoard()[row][column] = -1;
             return true;
         }
