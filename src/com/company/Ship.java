@@ -5,14 +5,12 @@ public class Ship {
     private String shipName;
     private int typeOfShip;
     private int length;
-    private boolean alive = true;
 
     //Konstructor
-    public Ship(String shipName, int typeOfShip, int length, boolean alive) {
+    public Ship(String shipName, int typeOfShip, int length) {
         this.shipName = shipName;
         this.typeOfShip = typeOfShip;
         this.length = length;
-        this.alive = alive;
     }
 
     //Get n set
@@ -40,12 +38,5 @@ public class Ship {
         this.length = length;
     }
 
-    public boolean isAlive() {
-        return alive;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-}

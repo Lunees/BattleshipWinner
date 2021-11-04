@@ -63,19 +63,19 @@ public class Main {
 
         // initierar submarine i arrayen
         for (; i < submarine; i++){
-            shipArray[i] = new Ship("Submarine",2,2,true);
+            shipArray[i] = new Ship("Submarine",2,2);
         }
         // lägger till cruisern till den tidigare submarinen
         for (; i < (submarine + cruiser); i++){
-            shipArray[i] = new Ship("Cruiser",3,3,true);
+            shipArray[i] = new Ship("Cruiser",3,3);
         }
         // lägger till battleship till de tidigare cruiserna och submarinesen
         for (; i < (submarine + cruiser + battleship); i++){
-            shipArray[i] = new Ship("Battleship",4,4,true);
+            shipArray[i] = new Ship("Battleship",4,4);
         }
         // lägger till carriern på slutet
         for (; i < (submarine + cruiser + battleship + carrier); i++){
-            shipArray[i] = new Ship("Carrier",5, 5, true);
+            shipArray[i] = new Ship("Carrier",5, 5);
         }
 
         //Placerar ut skepp.

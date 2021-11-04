@@ -4,7 +4,7 @@ public class GameFunction {
     //Variabler
     int playerAmountOfShips = 10;
     GameBoard gameBoard;
-    Ship deadShip = new Ship("Dead", -1, 1, false);
+    Ship deadShip = new Ship("Dead", -1, 1);
 
     //Konstruktorer
     public GameFunction() {
