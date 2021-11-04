@@ -45,6 +45,10 @@ public class GameBoard {
         System.out.println("--------------------------"); // delar upp gameboardsen
     }
 
+    public void changeIndex(int row, int column, Ship ship){
+        playerBoard[row][column] = ship;
+    }
+
     //Get n Set
     public int getRows() {
         return rows;

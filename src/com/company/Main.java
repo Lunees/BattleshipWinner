@@ -93,10 +93,10 @@ public class Main {
         //Skriver ut spelbrädet
 
         playerBoard.showGameBoard();
+            System.out.println(gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt()));
 
-        gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt());
-
-        playerBoard.showGameBoard();
+            playerBoard = gameFunction.getGameBoard();
+            playerBoard.showGameBoard();
 
     }
 }

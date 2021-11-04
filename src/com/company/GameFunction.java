@@ -3,6 +3,7 @@ package com.company;
 public class GameFunction {
     //Variabler
     GameBoard gameBoard;
+    Ship deadShip = new Ship("Dead", -1, 1, false);
 
     //Konstruktorer
     public GameFunction() {
@@ -17,7 +18,7 @@ public class GameFunction {
         Ship currentShot = gameBoard.getPlayerBoard()[row][column];
         if (currentShot != null) {
             currentShot.setLength(currentShot.getLength()-1);
-            currentShot = new Ship("Dead", -1, 1, false);
+            gameBoard.changeIndex(row, column, deadShip);
 
             return true;
         }
