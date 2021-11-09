@@ -44,13 +44,10 @@ public class Main {
         //Skapar objekt
         GameBoard playerBoard = new GameBoard(10, 10, 9);
         GameBoard enemyBoard = new GameBoard(10,10, 0);
-        //enemyBoard.createGameBoard(0);  // 0 = fogblock som gör det enklare att deklarera träff eller miss
-        //playerBoard.createGameBoard(9); // 9 = vattenblock
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
-        Parse parse = new Parse();
 
-        GameFunction gameFunction = new GameFunction(playerBoard);
+        GameFunction gameFunction = new GameFunction(playerBoard, enemyBoard);
 
         Ship[] shipArray = new Ship[10];
 
@@ -92,16 +89,23 @@ public class Main {
         placement.placeHorizontal(shipArray[9],9,5);
 
         //Testar parse
-
+        String s = "m shot 6c";
 
         //Skriver ut spelbrädet
-
         playerBoard.showGameBoard();
+        //Testfunktion för att bli skjuten och skjuta
         while (true) {
-            System.out.println(gameFunction.gettingShot(scanner.nextInt(), scanner.nextInt()));
+            System.out.println("Skriv koordinat i formatet \"[siffra][bokstav]\", ex. 6c");
+            String enemyAttack = scanner.nextLine(); //Läser av fiendens attack (Ska bytas ut till motståndares respons)
 
-            playerBoard = gameFunction.getGameBoard();
-            playerBoard.showGameBoard();
+            //Ser ifall fienden träffade/missade/sänkte ett skepp
+            char hitOrMiss = gameFunction.gettingShot(enemyAttack.charAt(1), enemyAttack.charAt(0));
+
+            playerBoard.showGameBoard(); //Uppdaterar playerBoard
+            String playerAttack = gameFunction.shooting(); //Skapar spelarens skott
+
+            //Spelarens respons
+            System.out.println(hitOrMiss + " shot " + playerAttack);
         }
 
     }
