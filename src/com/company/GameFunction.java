@@ -33,16 +33,18 @@ public class GameFunction {
             return false;
     }
 
-    public String shooting() {
-        int randomShot;
+    public void shooting() {
+        int randomShotX;
+        int randomShotY;
         do {
-            randomShot = random.nextInt(enemyBoard.getPlayerBoard().length);
+            randomShotX = (int) (Math.random()*10);
+            randomShotY = (int) (Math.random()*10);
+        }
+        while (enemyBoard.getPlayerBoard()[randomShotY][randomShotX] != null);
+
 
         }
-        while (randomShot != null){
-            
-            return "A 3";
-        }
+
         // Metod som kollar om skeppet är sänkt eller inte.
         // Om skeppets length är mindre än eller = 0 så är skeppet sänkt då minskas totalen skepp.
         public void isShipAlive (Ship ship){
@@ -60,4 +62,3 @@ public class GameFunction {
             this.gameBoard = gameBoard;
         }
     }
-}
