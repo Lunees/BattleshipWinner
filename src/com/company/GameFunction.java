@@ -14,8 +14,9 @@ public class GameFunction {
     public GameFunction() {
     }
 
-    public GameFunction(GameBoard gameBoard) {
+    public GameFunction(GameBoard gameBoard,GameBoard enemyBoard) {
         this.gameBoard = gameBoard;
+        this.enemyBoard = enemyBoard;
     }
 
     // Metoder
@@ -42,8 +43,9 @@ public class GameFunction {
         }
         while (enemyBoard.getPlayerBoard()[randomShotY][randomShotX] != null);
 
-
+        System.out.println(randomShotX +" "+ randomShotY);
         }
+
 
         // Metod som kollar om skeppet är sänkt eller inte.
         // Om skeppets length är mindre än eller = 0 så är skeppet sänkt då minskas totalen skepp.

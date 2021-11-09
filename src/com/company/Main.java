@@ -6,6 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+
         Scanner scanner = new Scanner(System.in);
         /*Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
 
@@ -49,7 +50,9 @@ public class Main {
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
 
-        GameFunction gameFunction = new GameFunction(playerBoard);
+        GameFunction gameFunction = new GameFunction(playerBoard,enemyBoard);
+            gameFunction.shooting();
+
 
         Ship[] shipArray = new Ship[10];
 
