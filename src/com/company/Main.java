@@ -48,6 +48,7 @@ public class Main {
         //playerBoard.createGameBoard(9); // 9 = vattenblock
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
+        Parse parse = new Parse();
 
         GameFunction gameFunction = new GameFunction(playerBoard);
 
@@ -89,6 +90,9 @@ public class Main {
         placement.placeHorizontal(shipArray[7],0,6);
         placement.placeVertical(shipArray[8],2,0);
         placement.placeHorizontal(shipArray[9],9,5);
+
+        //Testar parse
+
 
         //Skriver ut spelbrädet
 
