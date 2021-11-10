@@ -30,10 +30,10 @@ public abstract class Player {
     }
 
     //Skickar ut meddelande
-    public void send (String string){
+    public void send (String message){
         try {
-            out.println(string);
-            System.out.println("sent");
+            out.println(message);
+            System.out.println(message);
         }
         catch (Exception e){
             System.out.println("Nu krashade Send." + e);
