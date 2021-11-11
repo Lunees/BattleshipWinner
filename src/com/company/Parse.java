@@ -1,7 +1,7 @@
 package com.company;
 
 public class Parse {
-    //Omvandlar en bokstav till respektive rad-index
+    // Omvandlar en bokstav till respektive rad-index
     // a-j blir 0-9
     public int letterToIndex(char letter){
         int value = letter - 97; // 97 = ASCII värdet av 'a'

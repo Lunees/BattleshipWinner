@@ -5,8 +5,8 @@ import java.util.Random;
 public class GameFunction {
     Random random = new Random();
     //Variabler
-    GameBoard enemyBoard;
     int playerAmountOfShips = 10;
+    GameBoard enemyBoard;
     GameBoard gameBoard;
     Ship deadShip = new Ship("Dead", -1, 1);
     Parse parse = new Parse();
@@ -73,7 +73,7 @@ public class GameFunction {
             enemyBoard.changeIndex(row, column, deadShip); //Sätter index till dött.
         } else if(letter == 'm'){
             //Gör om till missat skepp
-            enemyBoard.changeIndex(row, column, new Ship("missed", 1, 1));
+            enemyBoard.changeIndex(row, column, new Ship("missed", 8, 1));
         }
     }
 

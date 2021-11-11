@@ -3,9 +3,9 @@ package com.company;
 import java.util.Scanner;
 
 public class Main {
-    
+
     public static void main(String[] args) {
-//Starta både main och main2, i console för main ska man trycka enter efter varje runda
+        //Starta både main och main2, i console för main ska man trycka enter efter varje runda
         //Skapar objekt
         GameBoard playerBoard = new GameBoard(10, 10, 9);
         GameBoard enemyBoard = new GameBoard(10,10, 0);
@@ -118,7 +118,10 @@ public class Main {
             playerAttack = gameFunction.shooting(); //Skapar spelarens skott: Format "6c"
 
             //Spelarens respons
+            System.out.println("Spelarens attack");
             player.send(hitOrMiss + " shot " + playerAttack);
+
+            //För att testa
             scanner.nextLine();
         }
 
