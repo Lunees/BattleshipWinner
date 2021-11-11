@@ -41,6 +41,7 @@ public class GameFunction {
     public String shooting() {
         int randomShotX;
         int randomShotY;
+
         do {
             randomShotX = (int) (Math.random()*10);
             randomShotY = (int) (Math.random()*10);

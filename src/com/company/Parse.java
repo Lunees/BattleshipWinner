@@ -20,5 +20,4 @@ public class Parse {
         String s = String.valueOf((char)(num + 97)); // 97 = ASCII värdet av 'a'
         return s;
     }
-
 }
