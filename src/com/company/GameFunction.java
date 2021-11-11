@@ -3,9 +3,9 @@ package com.company;
 import java.util.Random;
 
 public class GameFunction {
-    Random random = new Random();
     //Variabler
     int playerAmountOfShips = 10;
+    boolean alive = true;
     GameBoard enemyBoard;
     GameBoard gameBoard;
     Ship deadShip = new Ship("Dead", -1, 1);
@@ -53,26 +53,45 @@ public class GameFunction {
         return randomShotX + parse.intToString(randomShotY);
         }
 
+    public String shooting(int shotX, int shotY) {
+
+        while (enemyBoard.getPlayerBoard()[shotY][shotX] != null) {
+            shotX = (int) (Math.random()*10);
+            shotY = (int) (Math.random()*10);
+        }
+
+        //System.out.println(randomShotX + " " + randomShotY); //för att debugga
+        //formatet [column siffra][rad bokstav]
+        return shotX + parse.intToString(shotY);
+    }
+
     // Metod som kollar om skeppet är sänkt eller inte.
     // Om skeppets length är mindre än eller = 0 så är skeppet sänkt då minskas totalen skepp.
     public char isShipAlive (Ship ship){
         if (ship.getLength() <= 0) {
             playerAmountOfShips--;
+            areWeDeadYet();
             return 's';
         }
         return 'h';
     }
 
+    //Kollar om spelaren lever
+    public void areWeDeadYet(){
+        if (playerAmountOfShips <= 0)
+            alive = false;
+    }
+
     //Uppdaterar enemyboard ifall det är en träff
-    public void updateEnemyBoard (char rowChar, char columnChar, char letter){
+    public void updateEnemyBoard (char rowChar, char columnChar, char hitOrMiss){
         //Gör om char till rätt slags data
         int row = parse.letterToIndex(rowChar);
         int column = parse.numberToIndex(columnChar);
 
-        if (letter == 'h' || letter == 's') {
+        if (hitOrMiss == 'h' || hitOrMiss == 's') {
             //Gör om till ett dött skepp
             enemyBoard.changeIndex(row, column, deadShip); //Sätter index till dött.
-        } else if(letter == 'm'){
+        } else if(hitOrMiss == 'm'){
             //Gör om till missat skepp
             enemyBoard.changeIndex(row, column, new Ship("missed", 8, 1));
         }
@@ -85,14 +104,6 @@ public class GameFunction {
 
     public void setGameBoard (GameBoard gameBoard){
         this.gameBoard = gameBoard;
-    }
-
-    public Random getRandom() {
-        return random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
     }
 
     public GameBoard getEnemyBoard() {
@@ -125,5 +136,13 @@ public class GameFunction {
 
     public void setParse(Parse parse) {
         this.parse = parse;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

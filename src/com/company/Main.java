@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -9,9 +10,9 @@ public class Main {
         //Skapar objekt
         GameBoard playerBoard = new GameBoard(10, 10, 9);
         GameBoard enemyBoard = new GameBoard(10,10, 0);
+
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
-        Parse parse = new Parse();
 
         GameFunction gameFunction = new GameFunction(playerBoard, enemyBoard);
 
@@ -19,7 +20,8 @@ public class Main {
 
         Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
 
-        int port = 8900;
+        int port = 8900; //Bestämmer port
+        int pause = 2; //Bestämmer tid att vänta mellan varje skott
 
         //Spelaren får bestämma om den ska vara spelare 1 eller 2
         System.out.println("Spelare 1 eller 2?");
@@ -94,9 +96,12 @@ public class Main {
 
         //Se ifall fienden blivit träffad, bli beskjuten och skjut
         while (true) {
-            //Visar spelplanerna
-            playerBoard.showGameBoard();
-            enemyBoard.showGameBoard();
+            //Väntar i några sekunder innan programmet fortsätter
+            try {
+                TimeUnit.SECONDS.sleep(pause);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             //Tar emot fiendens attack
             System.out.println("Fiendens attack");
@@ -109,21 +114,32 @@ public class Main {
                     enemyShotRow = enemyAttack.charAt(8),       //vilken rad fienden skjutit, bokstav
                     enemyShotColumn = enemyAttack.charAt(7);    //vilken column fienden skjutit, siffra
 
+            //Kolla om spelaren vunnit
+
             //Uppdaterar enemyBoard
             gameFunction.updateEnemyBoard(playerShotRow, playerShotColumn, didWeHit);
 
             //Ser ifall fienden träffade/missade/sänkte ett skepp
             char hitOrMiss = gameFunction.gettingShot(enemyShotRow, enemyShotColumn); //Format 'h'
 
+            //Kollar om vi lever och skickar i så fall game over till fienden
+            if(!gameFunction.isAlive()){
+                player.send("game over");
+                playerBoard.showGameBoard();
+                break;
+            }
             playerAttack = gameFunction.shooting(); //Skapar spelarens skott: Format "6c"
 
             //Spelarens respons
             System.out.println("Spelarens attack");
             player.send(hitOrMiss + " shot " + playerAttack);
 
-            //För att testa
-            scanner.nextLine();
+            //Visar spelplanerna
+            playerBoard.showGameBoard();
+            enemyBoard.showGameBoard();
         }
+
+        player.stop();
 
     }
 }

@@ -5,13 +5,13 @@ import java.util.Scanner;
 public class Main2 {
 
     public static void main(String[] args) {
-
+        //Starta både main och main2, i console för main ska man trycka enter efter varje runda
         //Skapar objekt
         GameBoard playerBoard = new GameBoard(10, 10, 9);
         GameBoard enemyBoard = new GameBoard(10,10, 0);
+
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
-        Parse parse = new Parse();
 
         GameFunction gameFunction = new GameFunction(playerBoard, enemyBoard);
 
@@ -115,12 +115,21 @@ public class Main2 {
             //Ser ifall fienden träffade/missade/sänkte ett skepp
             char hitOrMiss = gameFunction.gettingShot(enemyShotRow, enemyShotColumn); //Format 'h'
 
+            if(!gameFunction.isAlive()){
+                player.send("game over");
+                break;
+            }
             playerAttack = gameFunction.shooting(); //Skapar spelarens skott: Format "6c"
 
             //Spelarens respons
+            System.out.println("Spelarens attack");
             player.send(hitOrMiss + " shot " + playerAttack);
 
+            //För att testa
+            //scanner.nextLine();
         }
+
+        player.stop();
 
     }
 }
