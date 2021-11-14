@@ -33,7 +33,7 @@ public class Main {
              if (playerChoice == 1){
                  player = new Player1(); //Sätter player som player 1
                  player.start(port);
-                 playerAttack = gameFunction.shooting(); //Skapar spelarens skott
+                 playerAttack = gameFunction.shootingRandom(); //Skapar spelarens skott
 
                  //Spelarens respons
                  player.send("i shot " + playerAttack); //Player 1 startar med att skicka meddelande
@@ -119,6 +119,8 @@ public class Main {
             //Uppdaterar enemyBoard
             gameFunction.updateEnemyBoard(playerShotRow, playerShotColumn, didWeHit);
 
+            gameFunction.planAttack(didWeHit);
+
             //Ser ifall fienden träffade/missade/sänkte ett skepp
             char hitOrMiss = gameFunction.gettingShot(enemyShotRow, enemyShotColumn); //Format 'h'
 
@@ -128,7 +130,9 @@ public class Main {
                 playerBoard.showGameBoard();
                 break;
             }
-            playerAttack = gameFunction.shooting(); //Skapar spelarens skott: Format "6c"
+
+
+            playerAttack = gameFunction.shootingRandom(); //Skapar spelarens skott: Format "6c"
 
             //Spelarens respons
             System.out.println("Spelarens attack");

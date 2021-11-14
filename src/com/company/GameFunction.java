@@ -1,15 +1,18 @@
 package com.company;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameFunction {
     //Variabler
-    int playerAmountOfShips = 10;
-    boolean alive = true;
-    GameBoard enemyBoard;
-    GameBoard gameBoard;
-    Ship deadShip = new Ship("Dead", -1, 1);
-    Parse parse = new Parse();
+    private int playerAmountOfShips = 10;
+    private boolean alive = true;
+    private Shot prevShot = new Shot(0,0);
+    private GameBoard enemyBoard,
+            gameBoard;
+    private Ship deadShip = new Ship("Dead", -1, 1);
+    private Parse parse = new Parse();
+    private List<Shot> shotList = new ArrayList<>();
 
     //Konstruktorer
     public GameFunction() {
@@ -36,9 +39,9 @@ public class GameFunction {
             return hitOrMiss;
     }
 
-    //Skjuter random
+    //Väljer ett random ställe att skjuta på
     //Att lägga till: Så att datorn baserat på om det är hit eller miss samt tidigare skott anpassar skottet
-    public String shooting() {
+    public String shootingRandom() {
         int randomShotX;
         int randomShotY;
 
@@ -46,23 +49,75 @@ public class GameFunction {
             randomShotX = (int) (Math.random()*10);
             randomShotY = (int) (Math.random()*10);
         }
-        while (enemyBoard.getPlayerBoard()[randomShotY][randomShotX] != null);
+        while (enemyBoard.getPlayerBoard()[randomShotY][randomShotX] != null); //Ser ifall spelaren sedan skjutit på indexet
 
         //System.out.println(randomShotX + " " + randomShotY); //för att debugga
+
         //formatet [column siffra][rad bokstav]
-        return randomShotX + parse.intToString(randomShotY);
+        return shooting(randomShotX,randomShotY);
         }
 
+    //Generell skjutningsfunktion
     public String shooting(int shotX, int shotY) {
+        //Sparar skottet
+        prevShot = new Shot(shotY,shotX);
 
-        while (enemyBoard.getPlayerBoard()[shotY][shotX] != null) {
-            shotX = (int) (Math.random()*10);
-            shotY = (int) (Math.random()*10);
-        }
-
-        //System.out.println(randomShotX + " " + randomShotY); //för att debugga
         //formatet [column siffra][rad bokstav]
         return shotX + parse.intToString(shotY);
+    }
+
+    //Huvudsatsen i planeringen av skottet (pågående)
+    public void planAttack(char hitOrMiss){
+        if (shotList.isEmpty()){
+            if (hitOrMiss == 'h'){
+                addToShotList(hitOrMiss);
+                System.out.println("Nu ska vi leta efter andra träffen");
+                System.out.println(findSecondHit());
+            }
+            else{
+                System.out.println("Nu ska vi skjuta random");
+            }
+        }
+        else{
+            addToShotList(hitOrMiss);
+
+        }
+    }
+
+    //För att hitta det andra skottet (Kan kanske göra om till en kortare funktion)
+    public String findSecondHit (){
+        //Ser om det går att skjuta till höger
+        if (prevShot.getIndexColumn() + 1 < gameBoard.getPlayerBoard().length){
+            //Ser om det redan är skjutet till höger
+            if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow()][prevShot.getIndexColumn() + 1] == null){
+                System.out.println("Skjuter till höger");
+                return "höger";
+            }
+        }
+        //Samma som ovan fast vänster
+        if (prevShot.getIndexColumn() - 1 >= 0){
+            if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow()][prevShot.getIndexColumn() - 1] == null){
+                System.out.println("Skjuter till vänster");
+                return "vänster";
+            }
+        }
+        //Samma som ovan fast neråt
+        if (prevShot.getIndexRow() + 1 < gameBoard.getPlayerBoard().length ){
+            if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow() + 1][prevShot.getIndexColumn()] == null){
+                System.out.println("Skjuter neråt");
+                return "ner";
+            }
+        }
+        //Om ingen tidigare returnerat så kvarstår bara uppåt
+        System.out.println("Skjuter upp");
+        return "upp";
+    }
+
+    //Lägger till skottet till en lista av skott, detta för att kunna planera skotten senare
+    //Aktiveras när ett skepp hittas
+    public void addToShotList(char hitOrMiss){
+        prevShot.setHitOrMiss(hitOrMiss);
+        shotList.add(prevShot);
     }
 
     // Metod som kollar om skeppet är sänkt eller inte.
@@ -85,8 +140,8 @@ public class GameFunction {
     //Uppdaterar enemyboard ifall det är en träff
     public void updateEnemyBoard (char rowChar, char columnChar, char hitOrMiss){
         //Gör om char till rätt slags data
-        int row = parse.letterToIndex(rowChar);
-        int column = parse.numberToIndex(columnChar);
+        int row = prevShot.getIndexRow();
+        int column = prevShot.getIndexColumn();
 
         if (hitOrMiss == 'h' || hitOrMiss == 's') {
             //Gör om till ett dött skepp
@@ -98,12 +153,28 @@ public class GameFunction {
     }
 
     //Get n set
-    public GameBoard getGameBoard () {
-        return gameBoard;
+    public int getPlayerAmountOfShips() {
+        return playerAmountOfShips;
     }
 
-    public void setGameBoard (GameBoard gameBoard){
-        this.gameBoard = gameBoard;
+    public void setPlayerAmountOfShips(int playerAmountOfShips) {
+        this.playerAmountOfShips = playerAmountOfShips;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public Shot getPrevShot() {
+        return prevShot;
+    }
+
+    public void setPrevShot(Shot prevShot) {
+        this.prevShot = prevShot;
     }
 
     public GameBoard getEnemyBoard() {
@@ -114,12 +185,12 @@ public class GameFunction {
         this.enemyBoard = enemyBoard;
     }
 
-    public int getPlayerAmountOfShips() {
-        return playerAmountOfShips;
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
-    public void setPlayerAmountOfShips(int playerAmountOfShips) {
-        this.playerAmountOfShips = playerAmountOfShips;
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public Ship getDeadShip() {
@@ -138,11 +209,11 @@ public class GameFunction {
         this.parse = parse;
     }
 
-    public boolean isAlive() {
-        return alive;
+    public List<Shot> getShotList() {
+        return shotList;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
+    public void setShotList(List<Shot> shotList) {
+        this.shotList = shotList;
     }
 }
