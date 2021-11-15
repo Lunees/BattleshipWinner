@@ -54,67 +54,134 @@ public class GameFunction {
         //System.out.println(randomShotX + " " + randomShotY); //för att debugga
 
         //formatet [column siffra][rad bokstav]
-        return shooting(randomShotX,randomShotY);
+        return shooting(new Shot(randomShotY,randomShotX));
         }
 
     //Generell skjutningsfunktion
-    public String shooting(int shotX, int shotY) {
+    public String shooting(Shot shot) {
         //Sparar skottet
-        prevShot = new Shot(shotY,shotX);
+        prevShot = shot;
 
-        //formatet [column siffra][rad bokstav]
-        return shotX + parse.intToString(shotY);
+        //formatet [kolumn siffra][rad bokstav]
+        return shot.getIndexColumn() + parse.intToString(shot.getIndexRow());
     }
 
     //Huvudsatsen i planeringen av skottet (pågående)
-    public void planAttack(char hitOrMiss){
+    public String planAttack(char hitOrMiss){
+        //Kollar om spelaren inte har hittat ett skepp, representerat av en lista
         if (shotList.isEmpty()){
-            if (hitOrMiss == 'h'){
+            if (hitOrMiss == 'h'){ //Om det är en träff har spelaren hittat ett skepp och ska hitta näsa skott
                 addToShotList(hitOrMiss);
                 System.out.println("Nu ska vi leta efter andra träffen");
-                System.out.println(findSecondHit());
+                return shooting(findSecondHit());
             }
-            else{
+            else{ //Om det är en miss fortsätter spelaren att leta efter ett skepp
                 System.out.println("Nu ska vi skjuta random");
+                return shootingRandom();
             }
         }
-        else{
-            addToShotList(hitOrMiss);
+        else{ //Om spelaren hittat ett skepp
+            if (hitOrMiss == 's'){ //Om skeppet är sänkt så ska listan försvinna och spelaren leta efter ett nytt skepp
+                shotList.clear();
+                //createFrame();
+                return shootingRandom();
+            } else { //Om skeppet inte är sänkt ska spelaren fortsätta leta
+                addToShotList(hitOrMiss);
 
+                if (findLastIndexByHitOrMiss(shotList, 'h') == 0){ //Har ännu inte hittat den andra träffen
+                    return shooting(findSecondHit());
+                }else{ //Har hittat nästa del av skeppet
+                    System.out.println("Nu ska vi sänka skeppet"); //Debug
+                    return shooting(findNextHit());
+                }
+            }
         }
     }
 
+    //Hitta när senaste träffen/missen var
+    public int findLastIndexByHitOrMiss(List<Shot> list, char letter){
+        for (int i = list.size() - 1; i >= 0; i--){
+            if (list.get(i).getHitOrMiss() == letter)
+                return i;
+        }
+        return -1;
+    }
+
     //För att hitta det andra skottet (Kan kanske göra om till en kortare funktion)
-    public String findSecondHit (){
-        //Ser om det går att skjuta till höger
-        if (prevShot.getIndexColumn() + 1 < gameBoard.getPlayerBoard().length){
+    //ATT GÖRA: Kan göra om alla nästlade if-satser till metod/metoder, kanske
+    public Shot findSecondHit (){
+        //Ser om det går att skjuta till höger från första indexet
+        if (shotList.get(0).getIndexColumn() + 1 < gameBoard.getPlayerBoard().length){
             //Ser om det redan är skjutet till höger
-            if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow()][prevShot.getIndexColumn() + 1] == null){
+            if (enemyBoard.getPlayerBoard()[shotList.get(0).getIndexRow()][shotList.get(0).getIndexColumn() + 1] == null){
                 System.out.println("Skjuter till höger");
-                return "höger";
+                return new Shot(shotList.get(0).getIndexRow(), shotList.get(0).getIndexColumn() + 1);
             }
         }
         //Samma som ovan fast vänster
-        if (prevShot.getIndexColumn() - 1 >= 0){
-            if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow()][prevShot.getIndexColumn() - 1] == null){
+        if (shotList.get(0).getIndexColumn() - 1 >= 0){
+            if (enemyBoard.getPlayerBoard()[shotList.get(0).getIndexRow()][shotList.get(0).getIndexColumn() - 1] == null){
                 System.out.println("Skjuter till vänster");
-                return "vänster";
+                return new Shot(shotList.get(0).getIndexRow(), shotList.get(0).getIndexColumn() - 1);
             }
         }
         //Samma som ovan fast neråt
-        if (prevShot.getIndexRow() + 1 < gameBoard.getPlayerBoard().length ){
-            if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow() + 1][prevShot.getIndexColumn()] == null){
+        if (shotList.get(0).getIndexRow() + 1 < gameBoard.getPlayerBoard().length ){
+            if (enemyBoard.getPlayerBoard()[shotList.get(0).getIndexRow() + 1][shotList.get(0).getIndexColumn()] == null){
                 System.out.println("Skjuter neråt");
-                return "ner";
+                return new Shot(shotList.get(0).getIndexRow() + 1, shotList.get(0).getIndexColumn());
             }
         }
         //Om ingen tidigare returnerat så kvarstår bara uppåt
         System.out.println("Skjuter upp");
-        return "upp";
+        return new Shot(shotList.get(0).getIndexRow() - 1, shotList.get(0).getIndexColumn() );
+    }
+
+    //Hittar vart spelaren ska skjuta härnäst
+    //BUGG: kan välja att skjuta på redan skjutna ifall senast träffad är precis intill kanten
+    public Shot findNextHit(){
+        Shot shot;
+
+        //Varifrån ska spelaren utgå ifrån i planering
+        if (prevShot.getHitOrMiss() == 'h'){
+            shot = prevShot; //Skeppet kan ligga åt hållet spelaren skjutit åt
+        }else {
+            shot = shotList.get(0); //Skeppet ligger åt andra hållet spelaren skjutit mot
+        }
+
+        //Om kolumnen är samma på första och sista hits så är skeppet vertikalt
+        if (shotList.get(0).getIndexColumn() ==
+                shotList.get(findLastIndexByHitOrMiss(shotList, 'h')).getIndexColumn()){
+            System.out.println("Vertical");
+            //Ser om det går att skjuta neråt
+            if (shot.getIndexRow() + 1 < gameBoard.getPlayerBoard().length){
+                //Ser om det redan är skjutet där
+                if (enemyBoard.getPlayerBoard()[shot.getIndexRow() + 1][shot.getIndexColumn()] == null){
+                    System.out.println("Skjuter neråt");
+                    return new Shot(shot.getIndexRow() + 1, shot.getIndexColumn());
+                }
+            }
+            //Om ingen tidigare returnerat så kvarstår bara uppåt
+            System.out.println("Skjuter upp");
+            return new Shot(prevShot.getIndexRow() - 1, prevShot.getIndexColumn() );
+
+        }else { //Om kolumnen inte är samma på första och sista hits så är skeppet horisontalt
+            System.out.println("Horizontal");
+            //Ser om det går att skjuta till höger
+            if (prevShot.getIndexColumn() + 1 < gameBoard.getPlayerBoard().length){
+                //Ser om det redan är skjutet till höger
+                if (enemyBoard.getPlayerBoard()[prevShot.getIndexRow()][prevShot.getIndexColumn() + 1] == null){
+                    System.out.println("Skjuter till höger");
+                    return new Shot(prevShot.getIndexRow(), prevShot.getIndexColumn() + 1);
+                }
+            }
+            //Samma som ovan fast vänster
+            System.out.println("Skjuter till vänster");
+            return new Shot(prevShot.getIndexRow(), prevShot.getIndexColumn() - 1);
+        }
     }
 
     //Lägger till skottet till en lista av skott, detta för att kunna planera skotten senare
-    //Aktiveras när ett skepp hittas
     public void addToShotList(char hitOrMiss){
         prevShot.setHitOrMiss(hitOrMiss);
         shotList.add(prevShot);

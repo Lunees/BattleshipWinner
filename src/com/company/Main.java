@@ -119,8 +119,6 @@ public class Main {
             //Uppdaterar enemyBoard
             gameFunction.updateEnemyBoard(playerShotRow, playerShotColumn, didWeHit);
 
-            gameFunction.planAttack(didWeHit);
-
             //Ser ifall fienden träffade/missade/sänkte ett skepp
             char hitOrMiss = gameFunction.gettingShot(enemyShotRow, enemyShotColumn); //Format 'h'
 
@@ -131,8 +129,7 @@ public class Main {
                 break;
             }
 
-
-            playerAttack = gameFunction.shootingRandom(); //Skapar spelarens skott: Format "6c"
+            playerAttack = gameFunction.planAttack(didWeHit); //Skapar spelarens skott: Format "6c"
 
             //Spelarens respons
             System.out.println("Spelarens attack");
