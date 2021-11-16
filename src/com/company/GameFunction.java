@@ -9,7 +9,7 @@ public class GameFunction {
     private boolean alive = true;
     private Shot prevShot = new Shot(0,0);
     private GameBoard enemyBoard,
-            gameBoard;
+                      gameBoard;
     private Ship deadShip = new Ship("Dead", -1, 1);
     private Parse parse = new Parse();
     private List<Shot> shotList = new ArrayList<>();
@@ -107,6 +107,18 @@ public class GameFunction {
         return -1;
     }
 
+    /*public boolean canShotBeFired(Shot shot, int plusHorizontal, int plusVertical){
+        //Ser om det går att skjuta från skottet
+        if (shotList.get(0).getIndexColumn() + plusHorizontal < gameBoard.getPlayerBoard().length &&
+                shotList.get(0).getIndexRow() + plusVertical < gameBoard.getPlayerBoard().length){
+            //Ser om det redan är skjutet till höger
+            if (enemyBoard.getPlayerBoard()[shot.getIndexRow() + plusVertical][shot.getIndexColumn() + plusHorizontal] == null){
+                System.out.println("Skjuter till höger");
+                return true);
+            }
+        }
+    }*/
+
     //För att hitta det andra skottet (Kan kanske göra om till en kortare funktion)
     //ATT GÖRA: Kan göra om alla nästlade if-satser till metod/metoder, kanske
     public Shot findSecondHit (){
@@ -161,9 +173,14 @@ public class GameFunction {
                     return new Shot(shot.getIndexRow() + 1, shot.getIndexColumn());
                 }
             }
-            //Om ingen tidigare returnerat så kvarstår bara uppåt
+            //Ifall det inte går att skjuta neråt ska spelaren skjuta uppåt
             System.out.println("Skjuter upp");
-            return new Shot(prevShot.getIndexRow() - 1, prevShot.getIndexColumn() );
+            int goUp =1; //Ifall skottet utgår från kanten måste spelaren kolla vart det är tomt
+            //Ser om det redan är skjutet där
+            while (enemyBoard.getPlayerBoard()[shot.getIndexRow() - goUp][shot.getIndexColumn()] != null){
+                    goUp++; //Om det är skjutet fortsätter spelaren kolla högre upp
+            }
+            return new Shot(prevShot.getIndexRow() - goUp, prevShot.getIndexColumn());
 
         }else { //Om kolumnen inte är samma på första och sista hits så är skeppet horisontalt
             System.out.println("Horizontal");
@@ -175,9 +192,14 @@ public class GameFunction {
                     return new Shot(prevShot.getIndexRow(), prevShot.getIndexColumn() + 1);
                 }
             }
-            //Samma som ovan fast vänster
+            //Ifall det inte går att skjuta till höger ska spelaren skjuta till vänster
             System.out.println("Skjuter till vänster");
-            return new Shot(prevShot.getIndexRow(), prevShot.getIndexColumn() - 1);
+            int goLeft = 1; //Ifall skottet utgår från kanten måste spelaren kolla vart det är tomt
+            // Ser om det redan är skjutet där
+            while (enemyBoard.getPlayerBoard()[shot.getIndexRow()][shot.getIndexColumn() - goLeft] != null){
+                    goLeft++; //Om det är skjutet fortsätter spelaren kolla till vänster
+            }
+            return new Shot(prevShot.getIndexRow(), prevShot.getIndexColumn() - goLeft);
         }
     }
 

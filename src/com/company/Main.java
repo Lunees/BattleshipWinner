@@ -128,6 +128,9 @@ public class Main {
                 playerBoard.showGameBoard();
                 break;
             }
+            //Visar spelplanerna
+            playerBoard.showGameBoard();
+            enemyBoard.showGameBoard();
 
             playerAttack = gameFunction.planAttack(didWeHit); //Skapar spelarens skott: Format "6c"
 
@@ -135,9 +138,7 @@ public class Main {
             System.out.println("Spelarens attack");
             player.send(hitOrMiss + " shot " + playerAttack);
 
-            //Visar spelplanerna
-            playerBoard.showGameBoard();
-            enemyBoard.showGameBoard();
+
         }
 
         player.stop();
