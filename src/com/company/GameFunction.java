@@ -82,8 +82,8 @@ public class GameFunction {
         }
         else{ //Om spelaren hittat ett skepp
             if (hitOrMiss == 's'){ //Om skeppet är sänkt så ska listan försvinna och spelaren leta efter ett nytt skepp
-                shotList.clear();
                 //createFrame();
+                shotList.clear();
                 return shootingRandom();
             } else { //Om skeppet inte är sänkt ska spelaren fortsätta leta
                 addToShotList(hitOrMiss);
@@ -106,6 +106,39 @@ public class GameFunction {
         }
         return -1;
     }
+/*
+    //Funkar inte
+    public void createFrame(){
+        Ship missedShip = new Ship("missed", 8, 1);
+        //Om vertikal
+        if (shotList.get(0).getIndexColumn() ==
+                shotList.get(findLastIndexByHitOrMiss(shotList, 'h')).getIndexColumn()){
+            for (Shot s : shotList) {
+                if (s.getHitOrMiss() == 'h') {
+                    if (canShotBeFired(s, 1, 0)) {
+                        enemyBoard.changeIndex(s.getIndexRow() ,s.getIndexColumn() + 1, missedShip);
+                    }
+                    if (canShotBeFired(s,-1,0)){
+                        enemyBoard.changeIndex(s.getIndexRow() ,s.getIndexColumn() - 1, missedShip);
+                    }
+                }
+            }
+        }
+        //Annars horisontell
+        else{
+            for (Shot s : shotList) {
+            if (s.getHitOrMiss() == 'h') {
+                if (canShotBeFired(s, 0, 1)) {
+                    enemyBoard.changeIndex(s.getIndexRow() + 1,s.getIndexColumn(), missedShip);
+                }
+                if (canShotBeFired(s,0,-1)){
+                    enemyBoard.changeIndex(s.getIndexRow() - 1,s.getIndexColumn(), missedShip);
+                }
+            }
+        }
+
+        }
+    }*/
 
     public boolean canShotBeFired(Shot shot, int plusHorizontal, int plusVertical){
         //Ser om det planerade skottet är innanför spelplanen
@@ -141,6 +174,8 @@ public class GameFunction {
         //Om ingen tidigare returnerat så kvarstår bara uppåt
         System.out.println("Skjuter upp");
         return new Shot(shotList.get(0).getIndexRow() - 1, shotList.get(0).getIndexColumn());
+
+        //Blivit ersatt med canShotBeFired metoden
         /*if (shotList.get(0).getIndexColumn() + 1 < gameBoard.getPlayerBoard().length){
             //Ser om det redan är skjutet till höger
             if (enemyBoard.getPlayerBoard()[shotList.get(0).getIndexRow()][shotList.get(0).getIndexColumn() + 1] == null){
@@ -166,7 +201,6 @@ public class GameFunction {
     }
 
     //Hittar vart spelaren ska skjuta härnäst
-    //BUGG: kan välja att skjuta på redan skjutna ifall senast träffad är precis intill kanten
     public Shot findNextHit(){
         Shot shot;
 
