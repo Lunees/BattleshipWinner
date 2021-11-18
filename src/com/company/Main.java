@@ -110,7 +110,10 @@ public class Main {
                     enemyShotColumn = enemyAttack.charAt(7);    //vilken column fienden skjutit, siffra
 
             //Kolla om spelaren vunnit
-
+            if(player.receive().equals("game over")){
+                System.out.println("Vinnare i spelet!");
+                break;
+            }
             //Uppdaterar enemyBoard
             enemyBoard.updateBoard(playerShotRow, playerShotColumn, didWeHit);
 
