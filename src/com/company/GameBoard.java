@@ -5,6 +5,7 @@ public class GameBoard {
     private int rows = 10;
     private int columns = 10;
     private int defaultBlock;
+    private Parse parse = new Parse();
 
     //private int[][] playerBoard = new int[rows][columns];
     private Ship[][] playerBoard = new Ship[rows][columns];
@@ -27,7 +28,7 @@ public class GameBoard {
                 playerBoard[i][j] = null;
             }
         }
-        showGameBoard(); 
+        showGameBoard();
     }*/
 
     //Visar spelbrädet
@@ -43,6 +44,21 @@ public class GameBoard {
             System.out.println();
         }
         System.out.println("--------------------------"); // delar upp gameboardsen
+    }
+
+    //Uppdaterar board ifall det är en träff
+    public void updateBoard (char rowChar, char columnChar, char hitOrMiss){
+        //Gör om char till rätt slags data
+        int row = parse.letterToIndex(rowChar);
+        int column = parse.numberToIndex(columnChar);
+
+        if (hitOrMiss == 'h' || hitOrMiss == 's') {
+            //Gör om till ett dött skepp
+            changeIndex(row, column, new Ship("deadShip", -1, 1)); //Sätter index till dött.
+        } else if(hitOrMiss == 'm'){
+            //Gör om till missat skepp
+            changeIndex(row, column, new Ship("missed", 8, 1));
+        }
     }
 
     public void changeIndex(int row, int column, Ship ship){

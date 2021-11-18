@@ -42,4 +42,6 @@ public class Shot {
     public void setHitOrMiss(char hitOrMiss) {
         this.hitOrMiss = hitOrMiss;
     }
+
+
 }
