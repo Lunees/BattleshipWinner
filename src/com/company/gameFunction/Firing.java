@@ -97,8 +97,7 @@ public class Firing extends FiringBase {
         }
 
         //Om kolumnen är samma på första och sista hits så är skeppet vertikalt
-        if (shotList.get(0).getIndexColumn() ==
-                shotList.get(findLastIndexByHitOrMiss(shotList, 'h')).getIndexColumn()) {
+        if (shotList.get(0).isVertical(shotList.get(findLastIndexByHitOrMiss(shotList, 'h')))) {
             System.out.println("Vertical");
             //Ser om det går att skjuta neråt
             if (canShotBeFired(shot, 0, 1))
@@ -107,6 +106,7 @@ public class Firing extends FiringBase {
             //Ifall det inte går att skjuta neråt ska spelaren skjuta uppåt
             System.out.println("Skjuter upp");
             int goUp = 1; //Ifall skottet utgår från kanten måste spelaren kolla vart det är tomt
+
             //Ser om det redan är skjutet där
             while (enemyBoard.getPlayerBoard()[shot.getIndexRow() - goUp][shot.getIndexColumn()] != null) {
                 goUp++; //Om det är skjutet fortsätter spelaren kolla högre upp
@@ -134,9 +134,8 @@ public class Firing extends FiringBase {
     //Skapar en ram runt ett redan funnet skepp så att spelaren inte behöver kolla där
     //Enligt reglerna kan inget skepp ligga precis bredvid ett annat skepp
     public void createFrame() {
-        //Om första skottet (initierande träff) och sista skottet (när skeppet sänktes) har samma columnIndex så är skeppet vertikalt
-        if (shotList.get(0).getIndexColumn() ==
-                shotList.get(shotList.size() - 1).getIndexColumn()) {
+        //Ser om första skottet (initierande träff) och sista skottet (när skeppet sänktes) är vertikalt
+        if (shotList.get(0).isVertical(shotList.get(shotList.size() - 1))) {
             //Sorterar för att lätt kunna lägga till skott nedanför
             sortHitsByRow();
             //Lägger till extra skott nedanför skeppet i listan för att kunna fylla ut ramen

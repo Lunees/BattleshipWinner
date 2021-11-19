@@ -18,6 +18,10 @@ public class Shot {
         this.indexColumn = indexColumn;
     }
 
+    public boolean isVertical(Shot shot2){
+        return indexColumn == shot2.getIndexColumn();
+    }
+
     //Get n set
     public int getIndexRow() {
         return indexRow;

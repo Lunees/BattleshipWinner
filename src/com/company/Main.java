@@ -86,7 +86,7 @@ public class Main {
         placement.placeVertical(shipArray[6],0,3);
         placement.placeHorizontal(shipArray[7],0,6);
         placement.placeVertical(shipArray[8],2,0);
-        placement.placeHorizontal(shipArray[9],8,5);
+        placement.placeHorizontal(shipArray[9],9,5);
 
         //Se ifall fienden blivit träffad, bli beskjuten och skjut
         int turn = 0;
