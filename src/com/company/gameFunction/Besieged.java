@@ -1,15 +1,11 @@
 package com.company.gameFunction;
 import com.company.*;
 
-public class Besieged {
+public class Besieged extends Base{
     //Variabler
-    private GameBoard enemyBoard,
-            gameBoard;
     private int playerAmountOfShips = 10;
     private boolean alive = true;
     private Ship deadShip = new Ship("Dead", -1, 1);
-    private Parse parse = new Parse();
-
 
     //Konstruktorer
     public Besieged() {
@@ -54,6 +50,7 @@ public class Besieged {
     }
 
     //Get n set
+
     public int getPlayerAmountOfShips() {
         return playerAmountOfShips;
     }
@@ -70,36 +67,11 @@ public class Besieged {
         this.alive = alive;
     }
 
-
-    public GameBoard getEnemyBoard() {
-        return enemyBoard;
-    }
-
-    public void setEnemyBoard(GameBoard enemyBoard) {
-        this.enemyBoard = enemyBoard;
-    }
-
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
-
-    public void setGameBoard(GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
-    }
-
     public Ship getDeadShip() {
         return deadShip;
     }
 
     public void setDeadShip(Ship deadShip) {
         this.deadShip = deadShip;
-    }
-
-    public Parse getParse() {
-        return parse;
-    }
-
-    public void setParse(Parse parse) {
-        this.parse = parse;
     }
 }

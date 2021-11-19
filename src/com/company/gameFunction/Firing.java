@@ -2,18 +2,11 @@ package com.company.gameFunction;
 
 import com.company.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Firing extends FiringBase {
-    private GameBoard enemyBoard,
-            gameBoard;
-    private Shot prevShot = new Shot(0, 0);
-    private Ship noShip = new Ship("no ship", 6, 1);
-    private Parse parse = new Parse();
-    private List<Shot> shotList = new ArrayList<>();
 
     public Firing() {
     }
@@ -24,15 +17,6 @@ public class Firing extends FiringBase {
     }
 
     //Metoder
-    //Generell skjutningsfunktion
-    public String shooting(Shot shot) {
-        //Sparar skottet
-        prevShot = shot;
-
-        //formatet [kolumn siffra][rad bokstav]
-        return shot.getIndexColumn() + parse.intToString(shot.getIndexRow());
-    }
-
     //Väljer ett random ställe att skjuta på
     public String shootingRandom() {
         int randomShotX, randomShotY;
@@ -58,7 +42,7 @@ public class Firing extends FiringBase {
                 return shooting(newShot);
             } else { //Om det är en miss fortsätter spelaren att leta efter ett skepp
                 System.out.println("Nu ska vi skjuta random");
-                removeSingles();
+                removeSingles(); //Tar bort alla oskjutna rutor som är ensamma :(
                 return shootingRandom();
             }
         } else { //Om spelaren hittat ett skepp
@@ -66,7 +50,7 @@ public class Firing extends FiringBase {
             if (hitOrMiss == 's') { //Om skeppet är sänkt
                 createFrame(); //finns inga fler skepp runt skeppet, då ska en ram skapas runt
                 shotList.clear(); //Listan töms
-                return shootingRandom(); //Spelaren ska fortsätta leta efter ett till skepp
+                return shootingRandom(); //Spelaren ska fortsätta leta efter ett skepp till
             } else { //Om skeppet inte är sänkt ska spelaren fortsätta leta
                 if (findLastIndexByHitOrMiss(shotList, 'h') == 0) { //Har ännu inte hittat den andra träffen
                     System.out.println("Vi fortsätter leta efter andra träffen");
@@ -150,7 +134,7 @@ public class Firing extends FiringBase {
     //Skapar en ram runt ett redan funnet skepp så att spelaren inte behöver kolla där
     //Enligt reglerna kan inget skepp ligga precis bredvid ett annat skepp
     public void createFrame() {
-        //Om första skottet (initierande träff) och sista skottet (När skeppet sänktes) har samma columnIndex så är skeppet vertikalt
+        //Om första skottet (initierande träff) och sista skottet (när skeppet sänktes) har samma columnIndex så är skeppet vertikalt
         if (shotList.get(0).getIndexColumn() ==
                 shotList.get(shotList.size() - 1).getIndexColumn()) {
             //Sorterar för att lätt kunna lägga till skott nedanför
@@ -269,43 +253,5 @@ public class Firing extends FiringBase {
         shotList.add(shot);
     }
 
-    public Shot getPrevShot() {
-        return prevShot;
-    }
 
-    public void setPrevShot(Shot prevShot) {
-        this.prevShot = prevShot;
-    }
-
-    public GameBoard getEnemyBoard() {
-        return enemyBoard;
-    }
-
-    public void setEnemyBoard(GameBoard enemyBoard) {
-        this.enemyBoard = enemyBoard;
-    }
-
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
-
-    public void setGameBoard(GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
-    }
-
-    public Parse getParse() {
-        return parse;
-    }
-
-    public void setParse(Parse parse) {
-        this.parse = parse;
-    }
-
-    public List<Shot> getShotList() {
-        return shotList;
-    }
-
-    public void setShotList(List<Shot> shotList) {
-        this.shotList = shotList;
-    }
 }
