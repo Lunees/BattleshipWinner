@@ -1,20 +1,17 @@
 package com.company.gameFunction;
 
-import com.company.GameBoard;
-import com.company.Parse;
-import com.company.Ship;
-import com.company.Shot;
+import com.company.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Firing {
-    private Shot prevShot = new Shot(0, 0);
+public class Firing extends FiringBase {
     private GameBoard enemyBoard,
             gameBoard;
-    private Ship deadShip = new Ship("Dead", -1, 1);
+    private Shot prevShot = new Shot(0, 0);
+    private Ship noShip = new Ship("no ship", 6, 1);
     private Parse parse = new Parse();
     private List<Shot> shotList = new ArrayList<>();
 
@@ -38,8 +35,7 @@ public class Firing {
 
     //Väljer ett random ställe att skjuta på
     public String shootingRandom() {
-        int randomShotX;
-        int randomShotY;
+        int randomShotX, randomShotY;
 
         do {
             randomShotX = (int) (Math.random() * 10);
@@ -62,6 +58,7 @@ public class Firing {
                 return shooting(newShot);
             } else { //Om det är en miss fortsätter spelaren att leta efter ett skepp
                 System.out.println("Nu ska vi skjuta random");
+                removeSingles();
                 return shootingRandom();
             }
         } else { //Om spelaren hittat ett skepp
@@ -80,110 +77,6 @@ public class Firing {
                 }
             }
         }
-    }
-
-    //Hitta när senaste träffen/missen var
-    public int findLastIndexByHitOrMiss(List<Shot> list, char letter) {
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (list.get(i).getHitOrMiss() == letter)
-                return i;
-        }
-        return -1;
-    }
-
-    //Sorterar alla shots som är träffar i ShotList utefter kolumn
-    public void sortHitsByColumn() {
-        Comparator<Shot> columnComparator = (s1, s2) -> s1.getIndexColumn() - s2.getIndexColumn();
-        removeMisses();
-        Collections.sort(shotList, columnComparator);
-    }
-
-    //Sorterar alla shots som är träffar i shotList utefter rad
-    public void sortHitsByRow() {
-        Comparator<Shot> rowComparator = (s1, s2) -> s1.getIndexRow() - s2.getIndexRow();
-        removeMisses();
-        Collections.sort(shotList, rowComparator);
-    }
-
-    //Tar bort alla missar i shotList
-    public void removeMisses() {
-        for (int i = shotList.size() - 1; i >= 0; i--) {
-            if (shotList.get(i).getHitOrMiss() == 'm')
-                shotList.remove(i);
-        }
-    }
-
-    //Skapar en ram runt ett redan funnet skepp så att spelaren inte behöver kolla där
-    //Enligt reglerna kan inget skepp ligga precis bredvid ett annat skepp
-    public void createFrame() {
-        Ship noShip = new Ship("no ship", 6, 1);
-        //Om första skottet (inicierande träff) och sista skottet (När skeppet sänktes) har samma columnIndex så är skeppet vertikalt
-        if (shotList.get(0).getIndexColumn() ==
-                shotList.get(shotList.size() - 1).getIndexColumn()) {
-            //Sorterar för att lätt kunna lägga till skott nedanför
-            sortHitsByRow();
-            //Lägger till extra skott nedanför skeppet i listan för att kunna fylla ut ramen
-            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow() + 1, shotList.get(shotList.size() - 1).getIndexColumn()));
-            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow() + 1, shotList.get(shotList.size() - 1).getIndexColumn()));
-
-            //Kollar vart ramen kan placeras
-            for (Shot s : shotList) {
-                if (s.getHitOrMiss() == 'h' || s.getHitOrMiss() == 's') {
-                    //Ser höger uppåt
-                    if (canShotBeFired(s, 1, -1)) {
-                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn() + 1, noShip);
-                    }
-                    //Ser uppåt
-                    if (canShotBeFired(s, 0, -1)) {
-                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn(), noShip);
-                    }
-                    //Ser vänster uppåt
-                    if (canShotBeFired(s, -1, -1)) {
-                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn() - 1, noShip);
-                    }
-                }
-            }
-        }
-        //Annars horisontell
-        else {
-            //Sorterar för att lätt kunna lägga till skott bredvid
-            sortHitsByColumn();
-            //Lägger till extra skott till höger om skeppet i listan för att fylla ut ramen
-            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow(), shotList.get(shotList.size() - 1).getIndexColumn() + 1));
-            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow(), shotList.get(shotList.size() - 1).getIndexColumn() + 1));
-
-            for (Shot s : shotList) {
-                if (s.getHitOrMiss() == 'h' || s.getHitOrMiss() == 's') {
-                    //Ser vänster nedanför
-                    if (canShotBeFired(s, -1, 1)) {
-                        enemyBoard.changeIndex(s.getIndexRow() + 1, s.getIndexColumn() - 1, noShip);
-                    }
-                    //Ser vänster
-                    if (canShotBeFired(s, -1, 0)) {
-                        enemyBoard.changeIndex(s.getIndexRow(), s.getIndexColumn() - 1, noShip);
-                    }
-                    //Ser vänster uppåt
-                    if (canShotBeFired(s, -1, -1)) {
-                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn() - 1, noShip);
-                    }
-                }
-            }
-
-        }
-    }
-
-    public boolean canShotBeFired(Shot shot, int plusRight, int plusDown) {
-        //Ser om det planerade skottet är innanför spelplanen
-        if (shot.getIndexColumn() + plusRight < enemyBoard.getPlayerBoard().length &&
-                shot.getIndexColumn() + plusRight >= 0 &&
-                shot.getIndexRow() + plusDown < enemyBoard.getPlayerBoard().length &&
-                shot.getIndexRow() + plusDown >= 0) {
-            //Ser om det redan är skjutet på den planerade skottet
-            if (enemyBoard.getPlayerBoard()[shot.getIndexRow() + plusDown][shot.getIndexColumn() + plusRight] == null) {
-                return true;
-            }
-        }
-        return false;
     }
 
     //För att hitta det andra skottet
@@ -254,6 +147,123 @@ public class Firing {
 
     }
 
+    //Skapar en ram runt ett redan funnet skepp så att spelaren inte behöver kolla där
+    //Enligt reglerna kan inget skepp ligga precis bredvid ett annat skepp
+    public void createFrame() {
+        //Om första skottet (initierande träff) och sista skottet (När skeppet sänktes) har samma columnIndex så är skeppet vertikalt
+        if (shotList.get(0).getIndexColumn() ==
+                shotList.get(shotList.size() - 1).getIndexColumn()) {
+            //Sorterar för att lätt kunna lägga till skott nedanför
+            sortHitsByRow();
+            //Lägger till extra skott nedanför skeppet i listan för att kunna fylla ut ramen
+            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow() + 1, shotList.get(shotList.size() - 1).getIndexColumn()));
+            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow() + 1, shotList.get(shotList.size() - 1).getIndexColumn()));
+
+            //Kollar vart ramen kan placeras
+            for (Shot s : shotList) {
+                if (s.getHitOrMiss() == 'h' || s.getHitOrMiss() == 's') {
+                    //Ser höger uppåt
+                    if (canShotBeFired(s, 1, -1)) {
+                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn() + 1, noShip);
+                    }
+                    //Ser uppåt
+                    if (canShotBeFired(s, 0, -1)) {
+                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn(), noShip);
+                    }
+                    //Ser vänster uppåt
+                    if (canShotBeFired(s, -1, -1)) {
+                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn() - 1, noShip);
+                    }
+                }
+            }
+        }
+        //Annars horisontell
+        else {
+            //Sorterar för att lätt kunna lägga till skott bredvid
+            sortHitsByColumn();
+            //Lägger till extra skott till höger om skeppet i listan för att fylla ut ramen
+            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow(), shotList.get(shotList.size() - 1).getIndexColumn() + 1));
+            addToShotList('h', new Shot(shotList.get(shotList.size() - 1).getIndexRow(), shotList.get(shotList.size() - 1).getIndexColumn() + 1));
+
+            for (Shot s : shotList) {
+                if (s.getHitOrMiss() == 'h' || s.getHitOrMiss() == 's') {
+                    //Ser vänster nedanför
+                    if (canShotBeFired(s, -1, 1)) {
+                        enemyBoard.changeIndex(s.getIndexRow() + 1, s.getIndexColumn() - 1, noShip);
+                    }
+                    //Ser vänster
+                    if (canShotBeFired(s, -1, 0)) {
+                        enemyBoard.changeIndex(s.getIndexRow(), s.getIndexColumn() - 1, noShip);
+                    }
+                    //Ser vänster uppåt
+                    if (canShotBeFired(s, -1, -1)) {
+                        enemyBoard.changeIndex(s.getIndexRow() - 1, s.getIndexColumn() - 1, noShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //Är det mindre än två tomma oskjutna platser vid varandra så finns inget skepp där
+    public void removeSingles(){
+        for (int row = 0; row < enemyBoard.getRows(); row++){
+            for (int column = 0; column <enemyBoard.getColumns(); column++){
+                //Ser om det går att skjuta på platsen eller runt om
+                if (enemyBoard.getPlayerBoard()[row][column] == null &&
+                        !canShotBeFired(new Shot(row, column), 1, 0)&&
+                        !canShotBeFired(new Shot(row, column), -1, 0)&&
+                        !canShotBeFired(new Shot(row, column), 0, 1)&&
+                        !canShotBeFired(new Shot(row, column), 0, -1))
+                    enemyBoard.changeIndex(row, column, noShip);
+            }
+        }
+    }
+
+    //Hitta när senaste träffen/missen var
+    public int findLastIndexByHitOrMiss(List<Shot> list, char letter) {
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getHitOrMiss() == letter)
+                return i;
+        }
+        return -1;
+    }
+
+    //Sorterar alla shots som är träffar i ShotList utefter kolumn
+    public void sortHitsByColumn() {
+        Comparator<Shot> columnComparator = (s1, s2) -> s1.getIndexColumn() - s2.getIndexColumn();
+        removeMisses();
+        Collections.sort(shotList, columnComparator);
+    }
+
+    //Sorterar alla shots som är träffar i shotList utefter rad
+    public void sortHitsByRow() {
+        Comparator<Shot> rowComparator = (s1, s2) -> s1.getIndexRow() - s2.getIndexRow();
+        removeMisses();
+        Collections.sort(shotList, rowComparator);
+    }
+
+    //Tar bort alla missar i shotList
+    public void removeMisses() {
+        for (int i = shotList.size() - 1; i >= 0; i--) {
+            if (shotList.get(i).getHitOrMiss() == 'm')
+                shotList.remove(i);
+        }
+    }
+
+    public boolean canShotBeFired(Shot shot, int plusRight, int plusDown) {
+        //Ser om det planerade skottet är innanför spelplanen
+        if (shot.getIndexColumn() + plusRight < enemyBoard.getPlayerBoard().length &&
+                shot.getIndexColumn() + plusRight >= 0 &&
+                shot.getIndexRow() + plusDown < enemyBoard.getPlayerBoard().length &&
+                shot.getIndexRow() + plusDown >= 0) {
+            //Ser om det redan är skjutet på den planerade skottet
+            if (enemyBoard.getPlayerBoard()[shot.getIndexRow() + plusDown][shot.getIndexColumn() + plusRight] == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addToShotList(char hitOrMiss, Shot shot){
         shot.setHitOrMiss(hitOrMiss);
         shotList.add(shot);
@@ -281,14 +291,6 @@ public class Firing {
 
     public void setGameBoard(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
-    }
-
-    public Ship getDeadShip() {
-        return deadShip;
-    }
-
-    public void setDeadShip(Ship deadShip) {
-        this.deadShip = deadShip;
     }
 
     public Parse getParse() {

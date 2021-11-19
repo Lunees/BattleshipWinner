@@ -40,7 +40,7 @@ public class Main {
                  playerAttack = firing.shootingRandom(); //Skapar spelarens skott
 
                  //Spelarens respons
-                 player.send("i shot " + playerAttack); //Player 1 startar med att skicka meddelande
+                 player.send("i shot ".concat(playerAttack)); //Player 1 startar med att skicka meddelande
                  break;
              }
              else if (playerChoice == 2){
@@ -86,10 +86,12 @@ public class Main {
         placement.placeVertical(shipArray[6],0,3);
         placement.placeHorizontal(shipArray[7],0,6);
         placement.placeVertical(shipArray[8],2,0);
-        placement.placeHorizontal(shipArray[9],9,5);
+        placement.placeHorizontal(shipArray[9],8,5);
 
         //Se ifall fienden blivit träffad, bli beskjuten och skjut
+        int turn = 0;
         while (true) {
+            turn++;
             //Väntar i några sekunder innan programmet fortsätter
             try {
                 TimeUnit.SECONDS.sleep(pause);
@@ -101,7 +103,7 @@ public class Main {
             System.out.println("Fiendens attack");
             String enemyAttack = player.receive(); //Format "h shot 6c"
 
-            System.out.println(playerAttack);
+            //System.out.println(playerAttack);
             //Variabler för den data som behövs
             char    playerShotRow = playerAttack.charAt(1),     //Vilken rad som spelaren skjutit
                     playerShotColumn = playerAttack.charAt(0),  //vilken column spelaren skjutit
@@ -110,10 +112,13 @@ public class Main {
                     enemyShotColumn = enemyAttack.charAt(7);    //vilken column fienden skjutit, siffra
 
             //Kolla om spelaren vunnit
-            if(player.receive().equals("game over")){
+            if(enemyAttack.equals("game over")){
                 System.out.println("Vinnare i spelet!");
+                enemyBoard.updateBoard(playerShotRow, playerShotColumn, 'h');
+                enemyBoard.showGameBoard();
                 break;
             }
+
             //Uppdaterar enemyBoard
             enemyBoard.updateBoard(playerShotRow, playerShotColumn, didWeHit);
 
@@ -134,11 +139,9 @@ public class Main {
 
             //Spelarens respons
             System.out.println("Spelarens attack");
-            player.send(hitOrMiss + " shot " + playerAttack);
-
-
+            player.send(hitOrMiss + " shot ".concat(playerAttack));
         }
-
+        System.out.println(turn);
         player.stop();
 
     }

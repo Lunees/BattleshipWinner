@@ -1,13 +1,12 @@
 package com.company.gameFunction;
 import com.company.*;
-import java.util.*;
 
 public class Besieged {
     //Variabler
-    private int playerAmountOfShips = 10;
-    private boolean alive = true;
     private GameBoard enemyBoard,
             gameBoard;
+    private int playerAmountOfShips = 10;
+    private boolean alive = true;
     private Ship deadShip = new Ship("Dead", -1, 1);
     private Parse parse = new Parse();
 
