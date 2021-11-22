@@ -1,11 +1,20 @@
 package com.company;
 
+import com.company.gameFunction.*;
+
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        int port = 8900; //Bestämmer port
+        int pause = 2; //Bestämmer tid att vänta mellan varje skott
+
+        // Skapa GUI:t.
+        GameBoardGUI gui = new GameBoardGUI("Sänka skepp", 20);
+        
         //Starta både main och main2, i console för main ska man trycka enter efter varje runda
         //Skapar objekt
         GameBoard playerBoard = new GameBoard(10, 10, 9);
@@ -14,18 +23,24 @@ public class Main {
         Placement placement = new Placement();
         placement.setGameBoard(playerBoard);
 
-        GameFunction gameFunction = new GameFunction(playerBoard, enemyBoard);
+        Besieged besieged = new Besieged(playerBoard, enemyBoard);
 
-        Scanner scanner = new Scanner(System.in);
+        Firing firing = new Firing(enemyBoard, playerBoard);
+
 
         Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
 
-        int port = 8900; //Bestämmer port
-        int pause = 2; //Bestämmer tid att vänta mellan varje skott
+        
+        // Visa en popup med spelarval i GUI:t. (Graphical User Interface)
+        Integer selectedPlayer = gui.selectPlayer();
+        if(selectedPlayer == null) {
+        	gui.exitGUI(0);
+        }
+        
+        int playerChoice = selectedPlayer.intValue();
+        // Visa vilken spelare som valts.
+        System.out.println("Player " + playerChoice + " vald");
 
-        //Spelaren får bestämma om den ska vara spelare 1 eller 2
-        System.out.println("Spelare 1 eller 2?");
-        int playerChoice = scanner.nextInt();
 
         String playerAttack = "0a";
         //Sätter upp spelaren
@@ -33,28 +48,20 @@ public class Main {
              if (playerChoice == 1){
                  player = new Player1(); //Sätter player som player 1
                  player.start(port);
-                 playerAttack = gameFunction.shooting(); //Skapar spelarens skott
+                 gui.setPlayerName("Spelare 1");
+                 playerAttack = firing.shootingRandom(); //Skapar spelarens skott
 
                  //Spelarens respons
-                 player.send("i shot " + playerAttack); //Player 1 startar med att skicka meddelande
+                 player.send("i shot ".concat(playerAttack)); //Player 1 startar med att skicka meddelande
                  break;
              }
              else if (playerChoice == 2){
                  player = new Player2(); //Sätter player som player 2
                  player.start(port);
+                 gui.setPlayerName("Spelare 2");
                  break;
              }
         }
-        //spelarna kommunicerar (Test)
-        /*
-        String message = "";
-        while (!message.equals("qq")){
-            scanner = new Scanner(System.in);
-            player.receive();
-            message = scanner.nextLine();
-            player.send(message);
-        }
-        */
 
         Ship[] shipArray = new Ship[10];
 
@@ -93,9 +100,18 @@ public class Main {
         placement.placeHorizontal(shipArray[7],0,6);
         placement.placeVertical(shipArray[8],2,0);
         placement.placeHorizontal(shipArray[9],9,5);
+        
+        // Sätt player och enemy board i GUI:t
+        gui.setPlayerBoard(playerBoard);
+        gui.setEnemyBoard(enemyBoard);
 
+        // Initiera och visa GUI:t
+        gui.init();
+        
         //Se ifall fienden blivit träffad, bli beskjuten och skjut
+        int turn = 0;
         while (true) {
+            turn++;
             //Väntar i några sekunder innan programmet fortsätter
             try {
                 TimeUnit.SECONDS.sleep(pause);
@@ -107,6 +123,7 @@ public class Main {
             System.out.println("Fiendens attack");
             String enemyAttack = player.receive(); //Format "h shot 6c"
 
+            //System.out.println(playerAttack);
             //Variabler för den data som behövs
             char    playerShotRow = playerAttack.charAt(1),     //Vilken rad som spelaren skjutit
                     playerShotColumn = playerAttack.charAt(0),  //vilken column spelaren skjutit
@@ -115,31 +132,47 @@ public class Main {
                     enemyShotColumn = enemyAttack.charAt(7);    //vilken column fienden skjutit, siffra
 
             //Kolla om spelaren vunnit
-
-            //Uppdaterar enemyBoard
-            gameFunction.updateEnemyBoard(playerShotRow, playerShotColumn, didWeHit);
-
-            //Ser ifall fienden träffade/missade/sänkte ett skepp
-            char hitOrMiss = gameFunction.gettingShot(enemyShotRow, enemyShotColumn); //Format 'h'
-
-            //Kollar om vi lever och skickar i så fall game over till fienden
-            if(!gameFunction.isAlive()){
-                player.send("game over");
-                playerBoard.showGameBoard();
+            if(enemyAttack.equals("game over")){
+                System.out.println("Vinnare i spelet!");
+                enemyBoard.updateBoard(playerShotRow, playerShotColumn, 'h');
+                enemyBoard.showGameBoard();
+                gui.updateGameBoards(playerBoard, enemyBoard);
+                gui.showVictory();
                 break;
             }
-            playerAttack = gameFunction.shooting(); //Skapar spelarens skott: Format "6c"
 
-            //Spelarens respons
-            System.out.println("Spelarens attack");
-            player.send(hitOrMiss + " shot " + playerAttack);
+            //Uppdaterar enemyBoard
+            enemyBoard.updateBoard(playerShotRow, playerShotColumn, didWeHit);
 
+            //Ser ifall fienden träffade/missade/sänkte ett skepp
+            char hitOrMiss = besieged.gettingShot(enemyShotRow, enemyShotColumn); //Format 'h'
+
+            //Kollar om vi lever och skickar i så fall game over till fienden
+            if(!besieged.isAlive()){
+                player.send("game over");
+                // Visa popup i GUI:t som talar om att vi förlorat.
+                playerBoard.showGameBoard();
+                gui.updateGameBoards(playerBoard, enemyBoard);
+                gui.showGameOver();
+                break;
+            }
+            
             //Visar spelplanerna
             playerBoard.showGameBoard();
             enemyBoard.showGameBoard();
+            
+            // Uppdaterar spelplanerna i GUI:t
+            gui.updateGameBoards(playerBoard, enemyBoard);
+            
+
+            playerAttack = firing.planAttack(didWeHit); //Skapar spelarens skott: Format "6c"
+
+            //Spelarens respons
+            System.out.println("Spelarens attack");
+            player.send(hitOrMiss + " shot ".concat(playerAttack));
         }
-
+        System.out.println(turn);
         player.stop();
-
     }
+    
 }

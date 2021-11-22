@@ -13,6 +13,9 @@ public class Ship {
         this.length = length;
     }
 
+    //Metoder
+
+
     //Get n set
     public String getShipName() {
         return shipName;
