@@ -38,6 +38,8 @@ public class GameBoardGUI extends JFrame {
 	// Storleken på varje ruta på spelplanen.
 	private int size;
 
+	private String playerName;
+
 	// Bakgrundsbilden för varje spelplan.
 	private Image bgImage;
 
@@ -91,6 +93,11 @@ public class GameBoardGUI extends JFrame {
 		this.enemyBoard = board;
 	}
 
+	// Sätter spelarens namn
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
 	// Initiera GUI:t.
 	public final void init() {
 		// Sätter layouten för denna JFrame till border layout.
@@ -101,7 +108,7 @@ public class GameBoardGUI extends JFrame {
 		gameBoards = new JPanel(new GridLayout(0, 1));
 		
 		// Label för spelarens namn.
-		playerLabel = new JLabel("You");
+		playerLabel = new JLabel(playerName);
 		// Centrera texten horizontellt och verticalt.
 		playerLabel.setHorizontalAlignment(JLabel.CENTER);
 		playerLabel.setVerticalAlignment(JLabel.CENTER);
@@ -456,3 +463,4 @@ public class GameBoardGUI extends JFrame {
 	}
 
 }
+

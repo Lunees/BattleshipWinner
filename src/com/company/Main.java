@@ -9,6 +9,9 @@ public class Main {
 
     public static void main(String[] args) {
 
+        int port = 8900; //Bestämmer port
+        int pause = 2; //Bestämmer tid att vänta mellan varje skott
+
         // Skapa GUI:t.
         GameBoardGUI gui = new GameBoardGUI("Sänka skepp", 20);
         
@@ -27,8 +30,6 @@ public class Main {
 
         Player player; //Om det är spelare 1 eller 2 bestäms senare, detta tack vare att Player är en abstrakt klass
 
-        int port = 8900; //Bestämmer port
-        int pause = 0; //Bestämmer tid att vänta mellan varje skott
         
         // Visa en popup med spelarval i GUI:t. (Graphical User Interface)
         Integer selectedPlayer = gui.selectPlayer();
@@ -47,6 +48,7 @@ public class Main {
              if (playerChoice == 1){
                  player = new Player1(); //Sätter player som player 1
                  player.start(port);
+                 gui.setPlayerName("Spelare 1");
                  playerAttack = firing.shootingRandom(); //Skapar spelarens skott
 
                  //Spelarens respons
@@ -56,6 +58,7 @@ public class Main {
              else if (playerChoice == 2){
                  player = new Player2(); //Sätter player som player 2
                  player.start(port);
+                 gui.setPlayerName("Spelare 2");
                  break;
              }
         }

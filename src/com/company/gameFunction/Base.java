@@ -4,10 +4,12 @@ import com.company.GameBoard;
 import com.company.Parse;
 
 public abstract class Base {
+    //Variabler
     protected GameBoard enemyBoard,
             gameBoard;
     protected Parse parse = new Parse();
 
+    //Get n set
     public GameBoard getEnemyBoard() {
         return enemyBoard;
     }

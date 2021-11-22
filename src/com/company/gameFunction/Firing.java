@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Firing extends FiringBase {
 
+    //Konstruktor
     public Firing() {
     }
 
@@ -87,9 +88,8 @@ public class Firing extends FiringBase {
 
     //Hittar vart spelaren ska skjuta härnäst
     public Shot findNextHit() {
-        Shot shot;
-
         //Utifrån vilket skott ska spelaren utgå ifrån i planering
+        Shot shot;
         if (prevShot.getHitOrMiss() == 'h') {
             shot = prevShot; //Skeppet kan ligga åt hållet spelaren skjutit åt
         } else {
@@ -189,6 +189,7 @@ public class Firing extends FiringBase {
 
     //Är det mindre än två tomma oskjutna platser vid varandra så finns inget skepp där
     public void removeSingles(){
+        //går igenom varje ruta i griden
         for (int row = 0; row < enemyBoard.getRows(); row++){
             for (int column = 0; column <enemyBoard.getColumns(); column++){
                 //Ser om det går att skjuta på platsen eller runt om
@@ -251,6 +252,4 @@ public class Firing extends FiringBase {
         shot.setHitOrMiss(hitOrMiss);
         shotList.add(shot);
     }
-
-
 }
