@@ -24,10 +24,13 @@ public class Besieged extends Base{
         char hitOrMiss = 'm';
         Ship currentShot = gameBoard.getPlayerBoard()[row][column]; // Hämtar index som har blivit beskjutet.
 
-        if (currentShot != null && !currentShot.equals(deadShip)) { // Om index inte är tomt och om det är ett dött skepp.
+        if (currentShot != null && !currentShot.equals(deadShip) && currentShot.getTypeOfShip() != 8) { // Om index inte är tomt och om det är ett dött skepp.
             currentShot.setLength(currentShot.getLength() - 1); // Om det är en träff så tar den minus på length.
             hitOrMiss = isShipAlive(currentShot); // Metod kollar om skeppet lever.
             gameBoard.changeIndex(row, column, deadShip); //Sätter index till dött.
+        } else if(currentShot == null) {
+        	currentShot = new Ship("miss", 8, 1);
+        	gameBoard.changeIndex(row, column, currentShot);
         }
         return hitOrMiss;
     }

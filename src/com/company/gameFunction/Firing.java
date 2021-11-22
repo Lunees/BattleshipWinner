@@ -20,7 +20,7 @@ public class Firing extends FiringBase {
     //Väljer ett random ställe att skjuta på
     public String shootingRandom() {
         int randomShotX, randomShotY;
-
+        
         do {
             randomShotX = (int) (Math.random() * 10);
             randomShotY = (int) (Math.random() * 10);
