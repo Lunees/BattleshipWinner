@@ -7,7 +7,6 @@ public class GameBoard {
     private int defaultBlock;
     private Parse parse = new Parse();
 
-    //private int[][] playerBoard = new int[rows][columns];
     private Ship[][] playerBoard = new Ship[rows][columns];
 
     //Constructor
@@ -21,16 +20,6 @@ public class GameBoard {
     }
 
     //Metoder
-    //För att skapa ett tomt spelbräde
-   /* public void createGameBoard(int num){
-        for(int i = 0; i < rows; i++ ){
-            for (int j = 0; j < columns; j++){
-                playerBoard[i][j] = null;
-            }
-        }
-        showGameBoard();
-    }*/
-
     //Visar spelbrädet
     public void showGameBoard(){
         for (int row = 0; row < rows; row++){
