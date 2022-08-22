@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Firing extends FiringBase {
 
-    //Konstruktor
+    //Konstruktorv
     public Firing() {
     }
 
